@@ -29,7 +29,7 @@ class ProductManager {
     }
 
     getProductsById = (idProduct) => {
-        // Obtengo informacion del producto por Id
+        // Obtengo informacion del producto por Id.
         const searchId = this.products.findIndex(e=>e.id===idProduct)
         searchId === -1 ? console.log("Not found") : console.log(this.products[searchId])
     }
