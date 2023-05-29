@@ -1,0 +1,11 @@
+[
+	{
+		"title": "titulo de prueba",
+		"description": "esddjdjd",
+		"price": 200,
+		"thumbnail": "sin img",
+		"code": "abc123",
+		"stock": 25,
+		"id": 1000
+	}
+]
