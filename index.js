@@ -1,3 +1,6 @@
+//Librerías
+import fs from 'fs'
+
 class ProductManager {                 
     constructor (path) {
         this.path = path;
@@ -11,6 +14,7 @@ class ProductManager {
             //console.log(products)
             return products
         } else {
+            console.log("no encuentro el archivo")
             return []
         }
     }
@@ -30,7 +34,7 @@ class ProductManager {
 
         // Lectura de archivo y creación de objeto con el nuevo producto
         const datos = await this.getProducts();
-        datos.forEach(e=>{e.code == code ? console.log("Error: El código de producto ya existe") : ""; })
+        await datos.forEach(e=>{e.code == code ? console.log("Error: El código de producto ya existe") : ""; })
         let id = 0;
         datos.length === 0 ? id = 1000 : id = datos[datos.length-1].id+1;
         const newProduct = {title, description, price, thumbnail, code, stock, id};
@@ -38,8 +42,10 @@ class ProductManager {
         // Manejo del archivo de Productos 
         if (datos.length === 0) {
             const datos = await fs.promises.writeFile(this.path, JSON.stringify([newProduct],null,'\t'));
+            console.log("entre aqui = 0")
         } else {
             datos.push(newProduct);
+            console.log("entre aqui")
             await fs.promises.writeFile(this.path, JSON.stringify(datos,null,'\t'));
         }
     } 
@@ -81,12 +87,11 @@ class ProductManager {
 
 } 
 
-const fs = require ('fs');
-const { type } = require('os');
-const filePath = './products-file.json';
+const filePath ="./products-file.json";
+//console.log(fs.existsSync(filePath))
 const manejadorProductos = new ProductManager (filePath);
-//manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello", 2500,  "./img/shpri410.jpg", "PRC410", 4 );
-//manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance", 1900, "./img/coplex250.jpg", "COP250", 10 );
+manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello", 2500,  "./img/shpri410.jpg", "PRC410", 4 );
+manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance", 1900, "./img/coplex250.jpg", "COP250", 10 );
 //manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico", 2600,  "./img/hialuc410.jpg", "TRH410", 2 );
 //manejadorProductos.getProducts();
 //manejadorProductos.getProductsById(1009);
