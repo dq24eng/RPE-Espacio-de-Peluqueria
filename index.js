@@ -11,10 +11,8 @@ class ProductManager {
         if (fs.existsSync(this.path)){
             const datos = await fs.promises.readFile(this.path, 'utf-8');
             const products = JSON.parse(datos)
-            //console.log(products)
             return products
         } else {
-            console.log("no encuentro el archivo")
             return []
         }
     }
@@ -34,7 +32,7 @@ class ProductManager {
 
         // Lectura de archivo y creación de objeto con el nuevo producto
         const datos = await this.getProducts();
-        await datos.forEach(e=>{e.code == code ? console.log("Error: El código de producto ya existe") : ""; })
+        datos.forEach(e=>{e.code == code ? console.log("Error: El código de producto ya existe") : ""; })
         let id = 0;
         datos.length === 0 ? id = 1000 : id = datos[datos.length-1].id+1;
         const newProduct = {title, description, price, thumbnail, code, stock, id};
@@ -42,23 +40,17 @@ class ProductManager {
         // Manejo del archivo de Productos 
         if (datos.length === 0) {
             const datos = await fs.promises.writeFile(this.path, JSON.stringify([newProduct],null,'\t'));
-            console.log("entre aqui = 0")
         } else {
             datos.push(newProduct);
-            console.log("entre aqui")
             await fs.promises.writeFile(this.path, JSON.stringify(datos,null,'\t'));
         }
     } 
 
-    getProductsById = async (idProduct) => {
+    getProductsById = async (id) => {
         // Obtengo informacion del producto por Id.
-        const datos = await this.getProducts();
-        const searchId = datos.findIndex(e=>e.id===idProduct)
-        if (searchId === -1) {
-            return console.log("Not found")
-        } else {
-            return datos[searchId]
-        }
+        this.products = await this.getProducts()
+        const searchId = this.products.find(product => product.id === id)
+        if(searchId) {return searchId} else{ console.log('Error, no lo encontré :(')}
     }
 
     updateProduct = async(id, updProduct) => {
@@ -87,17 +79,19 @@ class ProductManager {
 
 } 
 
-const filePath ="./products-file.json";
-//console.log(fs.existsSync(filePath))
+const filePath ='./products-file.json'
 const manejadorProductos = new ProductManager (filePath);
-manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello", 2500,  "./img/shpri410.jpg", "PRC410", 4 );
-manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance", 1900, "./img/coplex250.jpg", "COP250", 10 );
-//manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico", 2600,  "./img/hialuc410.jpg", "TRH410", 2 );
+/*const agregarProducto = async () => {
+    await manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello",2500,"./img/shpri410.jpg","PRC410",4)
+    await manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance",1900,"./img/coplex250.jpg","COP250",10)
+    await manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico",2650,"./img/hialuc410.jpg","TRH410",2)
+}
+agregarProducto();*/
+
 //manejadorProductos.getProducts();
-//manejadorProductos.getProductsById(1009);
+//manejadorProductos.getProductsById(1002);
 //manejadorProductos.updateProduct(1002, {"price":6300, "code": "TRL715"});
 //manejadorProductos.deleteProduct(1000);
-//manejadorProductos.addProduct("titulo de prueba", "es una descripcion de prueba", 200, "sin img", "abc123", 25)
 
 
 
