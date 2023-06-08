@@ -1,7 +1,7 @@
 //Librerías
 import fs from 'fs'
 
-class ProductManager {                 
+export default class ProductManager {
     constructor (path) {
         this.path = path;
     }
@@ -77,23 +77,7 @@ class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(res,null,'\t'));
     }
 
-} 
-
-const filePath ='./products-file.json'
-const manejadorProductos = new ProductManager (filePath);
-/*const agregarProducto = async () => {
-    await manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello",2500,"./img/shpri410.jpg","PRC410",4)
-    await manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance",1900,"./img/coplex250.jpg","COP250",10)
-    await manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico",2650,"./img/hialuc410.jpg","TRH410",2)
 }
-agregarProducto();*/
-
-//manejadorProductos.getProducts();
-//manejadorProductos.getProductsById(1002);
-//manejadorProductos.updateProduct(1002, {"price":6300, "code": "TRL715"});
-//manejadorProductos.deleteProduct(1000);
-
-
 
 // N  O  T  A  S
 // ----------------------------------------
@@ -113,4 +97,3 @@ agregarProducto();*/
     this.products.forEach(e=>{e.id == id ? id = Math.random().toString(36).substring(2,12) : "";})
 
 */
-

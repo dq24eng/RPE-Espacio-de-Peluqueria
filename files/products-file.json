@@ -20,9 +20,9 @@
 	{
 		"title": "Tratamiento Hialu C 410mg",
 		"description": "Con ácido hialuronico",
-		"price": 6300,
+		"price": 2650,
 		"thumbnail": "./img/hialuc410.jpg",
-		"code": "TRL715",
+		"code": "TRH410",
 		"stock": 2,
 		"id": 1002
 	}
