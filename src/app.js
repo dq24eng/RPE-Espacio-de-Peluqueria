@@ -1,39 +1,22 @@
 //Librerías
-import ProductManager from './productManager.js';
 import express from "express";
+import productsRouter from './routes/products.router.js'
+import __dirname from './utils.js'
 
 //Variables
-const filePath ='../files/products-file.json'
-const manejadorProductos = new ProductManager (filePath);
 const app = express(); // Variable que se encarga de acceder a todas las condiciones 
 
 // Servidor 
-app.use(express.urlencoded({extended:true}))
-app.get('/products', async (req, res)=>{
-    const productos = await manejadorProductos.getProducts();
-    let limite = req.query.limit;
-    let productosFiltrados = [];
-    if(limite>0) {
-        for (let index = 0; index < limite; index++) {
-            productosFiltrados.push(productos[index]);            
-        }
-        res.send(productosFiltrados);
-    } else {res.send (productos);}
-})
-app.get('/products/:pid', async (req, res)=> {
-    const productos = await manejadorProductos.getProducts();
-    let idProduct = req.params.pid;
-    let producto = productos.find(p => p.id==idProduct);
-    if(!producto) return res.send({error: "Producto no encontrado"});
-    res.send(producto);
-})
-app.listen(8080,()=>console.log("Server listening"))
+app.use(express.urlencoded({extended:true}));
+app.use(express.static(`${__dirname}/public`));
+app.use('/api/products', productsRouter);
 
+app.listen(8080,()=>console.log("Server listening"));
 
 /*const agregarProducto = async () => {
-    await manejadorProductos.addProduct("Shampoo PRIMONT Cell 410mg", "Rejuvenece fibra del cabello",2500,"./img/shpri410.jpg","PRC410",4)
-    await manejadorProductos.addProduct("Color Plex 250mg", "Bond Mainteinance",1900,"./img/coplex250.jpg","COP250",10)
-    await manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico",2650,"./img/hialuc410.jpg","TRH410",2)
+    await manejadorProductos.addProduct("Nutricion Reparadora PRIMONT 20mg", "Primont Nutri Reparadora Tratamiento Capilar Monodosis",650,"./img/nutri20.jpg","NUTR20",24)
+    await manejadorProductos.addProduct("Bio Balance Crema Peinar Vegana 250mg", "Base a elementos naturales de origen vegetal",1680,"./img/bio250.jpg","BIO250",2)
+    //await manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico",2650,"./img/hialuc410.jpg","TRH410",2)
 }
 agregarProducto();*/
 

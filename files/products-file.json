@@ -25,5 +25,23 @@
 		"code": "TRH410",
 		"stock": 2,
 		"id": 1002
+	},
+	{
+		"title": "Nutricion Reparadora PRIMONT 20mg",
+		"description": "Primont Nutri Reparadora Tratamiento Capilar Monodosis",
+		"price": 650,
+		"thumbnail": "./img/nutri20.jpg",
+		"code": "NUTR20",
+		"stock": 24,
+		"id": 1003
+	},
+	{
+		"title": "Bio Balance Crema Peinar Vegana 250mg",
+		"description": "Base a elementos naturales de origen vegetal",
+		"price": 1680,
+		"thumbnail": "./img/bio250.jpg",
+		"code": "BIO250",
+		"stock": 2,
+		"id": 1004
 	}
 ]
