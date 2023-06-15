@@ -7,7 +7,6 @@ const manejadorProductos = new ProductManager (filePath);
 
 router.get('/', async (req, res)=>{
     const productos = await manejadorProductos.getProducts();
-    console.log(productos)
     let limite = req.query.limit;
     
     let productosFiltrados = [];
@@ -28,20 +27,24 @@ router.get('/:pid', async (req, res)=> {
 })
 
 router.post ('/', async (req, res)=> {
-    let product = req.body;//Todo los que nos llega del cliente lo almacenamos en esta variable 
-    await manejadorProductos.addProduct(product.title, product.description, product.price,
-        product.thumbnail, product.code, product.stock, product.status, product.category); 
-        // (title, description, price, thumbnail, code, stock, status=true, category)
-    res.send({status:"sucess",message: "Producto añadido"})
+    try{
+        let product = req.body;//Todo los que nos llega del cliente lo almacenamos en esta variable 
+        await manejadorProductos.addProduct(product.title, product.description, product.price,
+            product.thumbnail, product.code, product.stock, product.status, product.category); 
+            // (title, description, price, thumbnail, code, stock, status=true, category)
+        res.send({status:"sucess",message: "Producto añadido"})
+    } catch (err) {
+        return res.status(400).send({status:"error",error:"Error al agregar el producto"})
+    }
 })
 
 router.put ('/:pid', async (req, res)=> {
-    let product = req.body; //Tomamos los parametros que llegan en el body de PUT
+    try {let product = req.body; //Tomamos los parametros que llegan en el body de PUT
     let idProd = parseInt(req.params.pid);
     await manejadorProductos.updateProduct(idProd, product);
     res.send({status:"sucess",message:"El producto fue actualizado"})
-    }, (error) => {
-        return res.status(400).send({status:"error",error:"La información enviada es incorrecta"})
+    } catch (error) {
+        return res.status(400).send({status:"error",error:"El producto no existe"})}
 });
 
 router.delete ('/:pid', async (req, res)=> {

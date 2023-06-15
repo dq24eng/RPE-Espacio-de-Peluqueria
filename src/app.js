@@ -2,7 +2,7 @@
 import express from "express";
 import productsRouter from './routes/products.router.js'
 import __dirname from './utils.js'
-import cartRouter from './routes/products.cart.js'
+import cartRouter from './routes/cart.router.js'
 
 //Variables
 const app = express(); // Variable que se encarga de acceder a todas las condiciones 
