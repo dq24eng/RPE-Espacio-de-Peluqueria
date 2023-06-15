@@ -1,22 +1,53 @@
 //Librerías
 import fs from 'fs'
+import ProductManager from './productManager.js';
 
-export default class ProductManager {
+const filePath ='../files/products-file.json'
+const manejadorProductos = new ProductManager (filePath);
+
+export default class CartManager {
     constructor (path) {
         this.path = path;
     }
 
-    getProducts = async() => {
-        // Devuelve la base de datos de productos 
+    getCart = async() => {
+        // Devuelve la información del Carrito
         if (fs.existsSync(this.path)){
             const datos = await fs.promises.readFile(this.path, 'utf-8');
-            const products = JSON.parse(datos)
-            return products
+            const cart = JSON.parse(datos);
+            return cart;
         } else {
-            return []
+            return [];
         }
     }
 
+    addCart = async(products) => {
+        const datos = await this.getCart();
+        let idCart = 0;
+        datos.length === 0 ? idCart = 2000 : idCart = datos[datos.length-1].id+1;
+        const newCart = {products, idCart};
+        // Manejo del archivo de Carritos
+        if (datos.length === 0) {
+            const datos = await fs.promises.writeFile(this.path, JSON.stringify([newProduct],null,'\t'));
+        } else {
+            datos.push(newCart);
+            await fs.promises.writeFile(this.path, JSON.stringify(datos,null,'\t'));
+        }        
+    }
+
+    getCartById = async (id) => {
+        // Obtengo informacion del carrito por Id.
+        const datos = await this.getCart()
+        let searchId = [];
+        for (let i=0; i< this.products.length; i++) {
+            if (datos[i].id == id) {
+                searchId = datos[i]
+            }
+        }
+        if(searchId) {return searchId} else{ console.log('Error, no lo encontré :(')}
+    }
+
+    /*
     addProduct = async(title, description, price, thumbnail, code, stock, status=true, category) => {
         // Esta función agrega un producto al arreglo de products y los almacena en el archivo 
 
@@ -81,25 +112,7 @@ export default class ProductManager {
         const datos = await this.getProducts();
         const res = datos.filter (del => del.id != product.id)
         await fs.promises.writeFile(this.path, JSON.stringify(res,null,'\t'));
-    }
+    }*/
 
 }
 
-// N  O  T  A  S
-// ----------------------------------------
-//          Constructor
-// ----------------------------------------
-/*
-    this.title = title;                 //Nombre del producto
-    this.description = description;     //Descripcion del producto
-    this.price = price;                 //Precio del producto
-    this.thumbnail = thumbnail;         //Ruta imagen producto
-    this.code = code;                   //Codigo identificador producto
-    this.stock = stock;                 // Número de piezas disponibles
-    this.path = path;                   // Ruta del archivo que contiene los productos 
-
-    *** Creación de Id aleatorio alfanumérico y validación ***
-    let id = Math.random().toString(36).substring(2,12);
-    this.products.forEach(e=>{e.id == id ? id = Math.random().toString(36).substring(2,12) : "";})
-
-*/

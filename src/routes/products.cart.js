@@ -1,10 +1,15 @@
 import { Router } from "express";
-import ProductManager from '../productManager.js';
+import ProductManager from '../cartManager.js';
 
 const router=Router();
-const filePath ='../files/products-file.json'
-const manejadorProductos = new ProductManager (filePath);
+const filePath ='../files/carrito.json'
+const manejadorCarrito = new ProductManager (filePath);
 
+router.post ('/', async(req, res)=> {
+    
+})
+
+/*
 router.get('/', async (req, res)=>{
     const productos = await manejadorProductos.getProducts();
     console.log(productos)
@@ -49,5 +54,7 @@ router.delete ('/:pid', async (req, res)=> {
     await manejadorProductos.deleteProduct(idProd);
     res.send({status:"sucess",message:"El producto fue eliminado"})
 });
+
+*/
 
 export default router;
