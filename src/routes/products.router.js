@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductManager from '../productManager.js';
+import { uploader } from "../utils.js";
 
 const router=Router();
 const filePath ='../files/products-file.json'
@@ -37,6 +38,21 @@ router.post ('/', async (req, res)=> {
         return res.status(400).send({status:"error",error:"Error al agregar el producto"})
     }
 })
+
+/*
+// MULTER
+router.post ('/', uploader.single('file'),async function(req, res) {
+    if(!req.file){
+        return res.status(400).send({status:"Error", error:"No se guardo la imagen"})
+    }
+    let product = req.body;
+    product.profile = req.file.path;
+    await manejadorProductos.addProduct(product.title, product.description, product.price,
+        product.thumbnail, product.code, product.stock, (product.status == "true" ? true:false), product.category); 
+        // (title, description, price, thumbnail, code, stock, status=true, category)
+    res.send({status:"Ok", message:"Producto creado"})
+})
+*/
 
 router.put ('/:pid', async (req, res)=> {
     try {let product = req.body; //Tomamos los parametros que llegan en el body de PUT

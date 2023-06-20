@@ -6,6 +6,7 @@
 		"thumbnail": "./img/shpri410.jpg",
 		"code": "PRC410",
 		"stock": 4,
+		"category": "Shampoo",
 		"id": 1000
 	},
 	{
@@ -13,7 +14,7 @@
 		"description": "Base a elementos naturales de origen vegetal",
 		"price": 1680,
 		"thumbnail": [
-			"../src/public/img/bio250.jpg"
+			"./img/bio250.jpg"
 		],
 		"code": "BIO250",
 		"stock": 2,
@@ -26,7 +27,7 @@
 		"description": "Con ácido hialuronico",
 		"price": 3000,
 		"thumbnail": [
-			"../src/public/img/hialuc410.jpg"
+			"./img/hialuc410.jpg"
 		],
 		"code": "TRH410",
 		"stock": 2,
@@ -39,7 +40,7 @@
 		"description": "Aporta suavidad, brillo, resistencia y cobertura al cabello.",
 		"price": 1960,
 		"thumbnail": [
-			"../src/public/img/colox67.jpg"
+			"./img/colox67.jpg"
 		],
 		"code": "KITCOX",
 		"stock": 12,
@@ -52,7 +53,7 @@
 		"description": "Oil Sérum Primont Maroc Oil",
 		"price": 2200,
 		"thumbnail": [
-			"../src/public/img/acei060.jpg"
+			"./img/acei060.jpg"
 		],
 		"code": "ACE060",
 		"stock": 23,
@@ -65,7 +66,7 @@
 		"description": "Pigmento Violeta Cabellos grises, blancos, rubios, con reflejos o platinados",
 		"price": 2800,
 		"thumbnail": [
-			"../src/public/img/pig500.jpg"
+			"./img/pig500.jpg"
 		],
 		"code": "PIG500",
 		"stock": 5,

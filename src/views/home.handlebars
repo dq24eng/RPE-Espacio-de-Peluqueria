@@ -1,0 +1,22 @@
+<div class="listProducts">
+    <h1>Lista de Productos</h1>
+    {{#if isThereProducts}}
+        {{#each productos}}
+        <div>
+            <img src={{this.thumbnail}} alt={{this.title}} width="100" height="150" >
+            <p>Nombre: {{this.title}}</p>
+            <p>Descripción: {{this.description}}</p>
+            <p>Precio: ${{this.price}}</p>
+            <p>Código producto: {{this.code}}</p>
+            <p>Stock: {{this.stock}}</p>
+            <p>Categoría: {{this.category}}</p>
+            <p>______________________________________________________________________</p>
+        </div>
+        {{/each}}
+    {{else}}
+        <p>No hay productos cargados </p>
+    {{/if}}
+    
+</div>
+
+<script src="js/index.js"></script>
