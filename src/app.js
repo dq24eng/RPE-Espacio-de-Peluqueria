@@ -1,29 +1,36 @@
 //Librerías
 import express from "express";
-import productsRouter from './routes/products.router.js';
 import __dirname from './utils.js';
-import cartRouter from './routes/cart.router.js';
 import handlebars from 'express-handlebars';
-import viewRouter from './routes/views.router.js';
 import { Server } from "socket.io";
 import ProductManager from "./productManager.js";
+import MessagesManager from "./dao/dbManagers/messages.js"
+
+import viewRouter from './routes/views.router.js';
+import productsRouter from './routes/products.router.js';
+import cartRouter from './routes/cart.router.js';
+import messagesRouter from './routes/messages.router.js';
+
+import mongoose from "mongoose";
 
 //Variables
+const PORT = 8080; // Puerto
 const app = express(); // Variable que se encarga de acceder a todas las condiciones 
 const filePath ='../files/products-file.json';
 const manejadorProductos = new ProductManager (filePath);
+const messMng = new MessagesManager;
+let messages=[]; // Mensajes de chat
+let usuarios=0; // Cantidad de usuarios conectados 
 
 // Servidor 
-const httpServer = app.listen(8080,()=>console.log("Server listening"));
+const httpServer = app.listen(PORT,()=>console.log("Server listening"));
 const socketServer = new Server(httpServer); // Cada vez que se levanta el servidor lo hace como un socket 
 export default socketServer;
 
 // Middlewares   -> Operaciones que se ejecutan de manera intermedia entre la petición del cliente y el servicio de nuestro servidor. 
-app.use(express.json()) //Para que el navegador interprete el llamado de los APIs
+
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(`${__dirname}/public`));
-app.use('/api/products', productsRouter);
-app.use('/api/cart', cartRouter);
 
 //Handlebars
 app.engine('handlebars', handlebars.engine());
@@ -34,10 +41,54 @@ app.use('/', viewRouter)
 // Socket.io
 
 socketServer.on('connection', async socket =>{
+    // Iniciamos conexión
     console.log("Start connection");
+
+    // Evento de emisión de array de productos - Actualización
     const products = await manejadorProductos.getProducts();
     socket.emit ("products", products);
+
+    // ChatBox
+    socket.on('message', async data=> {
+        messages.push(data);
+        socketServer.emit('messageLogs', messages)
+        await messMng.saveMessages(messages)
+        //console.log(data);
+    })
+
+    socket.on('authenticated', data => {
+        usuarios++;
+        socket.broadcast.emit('newUserConnected', usuarios + " usuarios conectados")
+    })
 })
+
+//MongoDB
+
+//mongoose.set('strictQuery', false)
+const config = {
+    mongoDB: {
+        URL: "mongodb+srv://dario240494:IwPwUUKQ664uucqU@ecommercedb.8mcyypf.mongodb.net/?retryWrites=true&w=majority",
+        options: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        },
+    },
+};
+
+export const connectMongoDB = async () => {
+    try {
+        await mongoose.connect(config.mongoDB.URL, config.mongoDB.options);
+        console.log("Connected to Mongo Atlas");
+    } catch (error) {
+        console.log("Error en la conexión con Mongo Atlas", error);
+    }
+};
+
+connectMongoDB();
+app.use(express.json()) //Para que el navegador interprete el llamado de los APIs
+app.use('/api/products', productsRouter);
+app.use('/api/cart', cartRouter);
+app.use('/chat', messagesRouter);
 
 /*const agregarProducto = async () => {
     // (title, description, price, thumbnail, code, stock, status=true, category)

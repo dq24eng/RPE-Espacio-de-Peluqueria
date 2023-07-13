@@ -40,4 +40,13 @@ router.delete ('/realtimeproducts', async (req, res)=> {
     res.send({status:"sucess",message:"El producto fue eliminado"})
 });
 
+/*
+// ChatBox
+router.get ('/chat', async (req, res)=> {
+    res.render('chat', {
+        style: 'index.css'
+    })
+})
+*/
+
 export default router;

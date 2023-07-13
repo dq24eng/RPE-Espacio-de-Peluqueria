@@ -1,10 +1,15 @@
 import { Router } from "express";
-import ProductManager from '../productManager.js';
-import { uploader } from "../utils.js";
+import ProductManager from '../productManager.js';          // FILE SYSTEM
+import Products from "../dao/dbManagers/products.js";       // MONGO DB
 
 const router=Router();
 const filePath ='../files/products-file.json'
-const manejadorProductos = new ProductManager (filePath);
+const manejadorProductos = new ProductManager (filePath);   // FILE SYSTEM 
+const prodManager = new Products;                           // MONGO DB
+
+/*
+
+// FILE SYSTEM 
 
 router.get('/', async (req, res)=>{
     const productos = await manejadorProductos.getProducts();
@@ -39,6 +44,23 @@ router.post ('/', async (req, res)=> {
     }
 })
 
+router.put ('/:pid', async (req, res)=> {
+    try {let product = req.body; //Tomamos los parametros que llegan en el body de PUT
+    let idProd = parseInt(req.params.pid);
+    await manejadorProductos.updateProduct(idProd, product);
+    res.send({status:"sucess",message:"El producto fue actualizado"})
+    } catch (error) {
+        return res.status(400).send({status:"error",error:"El producto no existe"})}
+});
+
+router.delete ('/:pid', async (req, res)=> {
+    let idProd = parseInt(req.params.pid);
+    await manejadorProductos.deleteProduct(idProd);
+    res.send({status:"sucess",message:"El producto fue eliminado"})
+});
+
+*/
+
 /*
 // MULTER
 router.post ('/', uploader.single('file'),async function(req, res) {
@@ -54,19 +76,20 @@ router.post ('/', uploader.single('file'),async function(req, res) {
 })
 */
 
-router.put ('/:pid', async (req, res)=> {
-    try {let product = req.body; //Tomamos los parametros que llegan en el body de PUT
-    let idProd = parseInt(req.params.pid);
-    await manejadorProductos.updateProduct(idProd, product);
-    res.send({status:"sucess",message:"El producto fue actualizado"})
-    } catch (error) {
-        return res.status(400).send({status:"error",error:"El producto no existe"})}
-});
+// MONGODB
 
-router.delete ('/:pid', async (req, res)=> {
-    let idProd = parseInt(req.params.pid);
-    await manejadorProductos.deleteProduct(idProd);
-    res.send({status:"sucess",message:"El producto fue eliminado"})
-});
+router.get ('/', async(req, res)=> {
+    let products = await prodManager.getAll();
+    if(!products) return res.status(500).status({status:"error", error:"No se pudo obtener los datos "});
+    res.send({status:"success", playload: products});
+})
+
+router.post('/', async(req, res)=> {
+    let {title, description, price, thumbnail, code, stock, status, category} = req.body;
+    let result = await prodManager.createProduct({
+        title, description, price, thumbnail, code, stock, status, category
+    })
+    res.send({status:"success", playload: result})
+})
 
 export default router;
