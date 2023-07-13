@@ -1,6 +1,6 @@
 //Librerías 
 import express from "express"
-import ProductManager from "../productManager.js"
+import ProductManager from "../dao/fileManagers/productManager.js"
 import socketServer from "../app.js";
 
 // Variables 

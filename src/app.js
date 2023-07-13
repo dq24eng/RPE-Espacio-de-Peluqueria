@@ -3,7 +3,7 @@ import express from "express";
 import __dirname from './utils.js';
 import handlebars from 'express-handlebars';
 import { Server } from "socket.io";
-import ProductManager from "./productManager.js";
+import ProductManager from "./dao/fileManagers/productManager.js";
 import MessagesManager from "./dao/dbManagers/messages.js"
 
 import viewRouter from './routes/views.router.js';

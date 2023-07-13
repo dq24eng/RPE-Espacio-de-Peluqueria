@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from '../productManager.js';          // FILE SYSTEM
+import ProductManager from '../dao/fileManagers/productManager.js';          // FILE SYSTEM
 import Products from "../dao/dbManagers/products.js";       // MONGO DB
 
 const router=Router();
