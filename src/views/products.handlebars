@@ -1,21 +1,25 @@
 <div>
-    {{#each filter}}
-        <p> Nombre: {{title}} </p>
-        <p> Descripción: {{description}} </p>
-        <p> Categoría: {{category}} </p>
-        <p> ____________________________________________________________________________________________________________ </p>
+    {{#each playload}}
+        <div>
+            <p> Nombre: {{title}} </p>
+            <p> Descripción: {{description}} </p>
+            <p> Categoría: {{category}} </p>
+            <p> ____________________________________________________________________________________________________________ </p>
+        </div>
     {{/each}}
 
-    {{#if hasPrevPage}}
-        <a href="/api/products?page={{prevPage}}&&limit={{limit}}&&query={{query}}">
-            <button>Anterior</button>
-        </a>
-    {{/if}}
+    <div>
+        {{#if hasPrevPage}}
+            <a href="/api/products?query={{query}}&limit={{limit}}&page={{prevPage}}">
+                <button>Anterior</button>
+            </a>
+        {{/if}}
 
-    {{#if hasNextPage}}
-        <a href="/api/products?page={{nextPage}}&&limit={{limit}}&&query={{query}}">
-            <button>Siguiente</button>
-        </a>
-    {{/if}}
+        {{#if hasNextPage}}
+            <a href="/api/products?query={{query}}&limit={{limit}}&page={{nextPage}}">
+                <button>Siguiente</button>
+            </a>
+        {{/if}}
+	</div>
 </div>
 

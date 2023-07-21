@@ -89,32 +89,45 @@ router.get ('/', async(req, res)=> {
 
 router.get ('/', async(req, res) => {
 
-    const {page=1, limit=10, query="", sort} = req.query;
-    const {docs, hasPrevPage, hasNextPage, nextPage, prevPage} = 
-        await productModel.paginate({}, {limit, page, lean: true, sort, query});
+    let {page=1, limit=10, query, sort} = req.query;
+    const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages} = 
+        await productModel.paginate({}, {limit, page, lean: true});
     const products = docs;
-    let filter = []
-    if (query) {
-        for (let index = 0; index < products.length; index++) {
-            if(products[index].category == query) {
-                filter.push(products[index]);
-            }
+    const filter = {category: query};
+    const prodFiltrados = await productModel.paginate(filter, {limit, page, lean: true})  ;
+
+    if (prodFiltrados.docs.length > 0) {
+        try {
+            res.status(200).render("products", {
+                status: "success",
+                payload: prodFiltrados.docs,
+                totalPages: prodFiltrados.totalPages,
+                hasPrevPage: prodFiltrados.hasPrevPage,
+                hasNextPage: prodFiltrados.hasNextPage,
+                prevPage: prodFiltrados.prevPage,
+                nextPage: prodFiltrados.nextPage,
+                page,
+                limit,
+                query
+            });
+        } catch (error) {
+            console.log("Something went wrong", error)
         }
-    } else {
-        filter = products;
     }
-    res.status(200).render('products', {
+
+    res.status(200).render("products", {
         status: "success",
-        playload: products,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage, 
+        playload: products, 
+        totalPages: totalPages,
+		hasPrevPage: hasPrevPage,
+		hasNextPage: hasNextPage,
+		prevPage: prevPage,
+		nextPage: nextPage,
+        page,
         limit,
-        filter, 
-        query,
-        page
+        query
     });
+
 });
 
 router.post('/', async(req, res)=> {
