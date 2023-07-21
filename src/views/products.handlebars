@@ -1,0 +1,21 @@
+<div>
+    {{#each filter}}
+        <p> Nombre: {{title}} </p>
+        <p> Descripción: {{description}} </p>
+        <p> Categoría: {{category}} </p>
+        <p> ____________________________________________________________________________________________________________ </p>
+    {{/each}}
+
+    {{#if hasPrevPage}}
+        <a href="/api/products?page={{prevPage}}&&limit={{limit}}&&query={{query}}">
+            <button>Anterior</button>
+        </a>
+    {{/if}}
+
+    {{#if hasNextPage}}
+        <a href="/api/products?page={{nextPage}}&&limit={{limit}}&&query={{query}}">
+            <button>Siguiente</button>
+        </a>
+    {{/if}}
+</div>
+

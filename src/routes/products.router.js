@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ProductManager from '../dao/fileManagers/productManager.js';          // FILE SYSTEM
-import Products from "../dao/dbManagers/products.js";       // MONGO DB
+import Products from "../dao/dbManagers/products.js";                        // MONGO DB
+import { productModel } from "../dao/models/products.js";
 
 const router=Router();
 const filePath ='../files/products-file.json'
@@ -78,11 +79,43 @@ router.post ('/', uploader.single('file'),async function(req, res) {
 
 // MONGODB
 
+/*
 router.get ('/', async(req, res)=> {
     let products = await prodManager.getAll();
     if(!products) return res.status(500).status({status:"error", error:"No se pudo obtener los datos "});
     res.send({status:"success", playload: products});
 })
+*/
+
+router.get ('/', async(req, res) => {
+
+    const {page=1, limit=10, query="", sort} = req.query;
+    const {docs, hasPrevPage, hasNextPage, nextPage, prevPage} = 
+        await productModel.paginate({}, {limit, page, lean: true, sort, query});
+    const products = docs;
+    let filter = []
+    if (query) {
+        for (let index = 0; index < products.length; index++) {
+            if(products[index].category == query) {
+                filter.push(products[index]);
+            }
+        }
+    } else {
+        filter = products;
+    }
+    res.status(200).render('products', {
+        status: "success",
+        playload: products,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage, 
+        limit,
+        filter, 
+        query,
+        page
+    });
+});
 
 router.post('/', async(req, res)=> {
     let {title, description, price, thumbnail, code, stock, status, category} = req.body;
