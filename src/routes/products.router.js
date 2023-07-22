@@ -96,6 +96,14 @@ router.get ('/', async(req, res) => {
     const products = docs;
     // Variable filtrada por categoría que se puede recibir del método get
     const prodFiltrados = await productModel.paginate({category: query}, {limit, page, lean: true})
+    // Ordenación sort 
+    if(sort == 'asc') {
+        prodFiltrados.docs.sort(((a,b) => a.price - b.price));  // Ordenamiento de menor a mayor por precio
+        products.sort(((a,b) => a.price - b.price));
+    } else if (sort == 'desc') {
+        prodFiltrados.docs.sort(((a,b) => b.price - a.price));  // Ordenamiento de mayor a menor por precio
+        products.sort(((a,b) => b.price - a.price));
+    }
 
     if (prodFiltrados.docs.length > 0) {
         return res.render('products', {
@@ -108,7 +116,8 @@ router.get ('/', async(req, res) => {
             nextPage: prodFiltrados.nextPage,
             page,
             limit,
-            query
+            query,
+            sort
         });
     } else {
         return res.render('products', {
@@ -121,7 +130,8 @@ router.get ('/', async(req, res) => {
             nextPage: nextPage,
             page,
             limit,
-            query
+            query,
+            sort
         });
     }
 

@@ -4,19 +4,20 @@
             <p> Nombre: {{title}} </p>
             <p> Descripción: {{description}} </p>
             <p> Categoría: {{category}} </p>
+            <p> Precio: {{price}} </p>
             <p> ____________________________________________________________________________________________________________ </p>
         </div>
     {{/each}}
 
     <div>
         {{#if hasPrevPage}}
-            <a href="/api/products?query={{query}}&limit={{limit}}&page={{prevPage}}">
+            <a href="/api/products?query={{query}}&limit={{limit}}&page={{prevPage}}&sort={{sort}}">
                 <button>Anterior</button>
             </a>
         {{/if}}
 
         {{#if hasNextPage}}
-            <a href="/api/products?query={{query}}&limit={{limit}}&page={{nextPage}}">
+            <a href="/api/products?query={{query}}&limit={{limit}}&page={{nextPage}}&sort={{sort}}">
                 <button>Siguiente</button>
             </a>
         {{/if}}
