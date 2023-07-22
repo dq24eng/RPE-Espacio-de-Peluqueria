@@ -89,44 +89,41 @@ router.get ('/', async(req, res)=> {
 
 router.get ('/', async(req, res) => {
 
-    let {page=1, limit=10, query, sort} = req.query;
+    let {page=1, limit=10, query , sort} = req.query;
+    // Variables sin filtrar que se reciben del método get
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages} = 
         await productModel.paginate({}, {limit, page, lean: true});
     const products = docs;
-    const filter = {category: query};
-    const prodFiltrados = await productModel.paginate(filter, {limit, page, lean: true})  ;
+    // Variable filtrada por categoría que se puede recibir del método get
+    const prodFiltrados = await productModel.paginate({category: query}, {limit, page, lean: true})
 
     if (prodFiltrados.docs.length > 0) {
-        try {
-            res.status(200).render("products", {
-                status: "success",
-                payload: prodFiltrados.docs,
-                totalPages: prodFiltrados.totalPages,
-                hasPrevPage: prodFiltrados.hasPrevPage,
-                hasNextPage: prodFiltrados.hasNextPage,
-                prevPage: prodFiltrados.prevPage,
-                nextPage: prodFiltrados.nextPage,
-                page,
-                limit,
-                query
-            });
-        } catch (error) {
-            console.log("Something went wrong", error)
-        }
+        return res.render('products', {
+            status: "success",
+            playload: prodFiltrados.docs,  // <- Datos filtrados por categoría 
+            totalPages: prodFiltrados.totalPages,
+            hasPrevPage: prodFiltrados.hasPrevPage,
+            hasNextPage: prodFiltrados.hasNextPage,
+            prevPage: prodFiltrados.prevPage,
+            nextPage: prodFiltrados.nextPage,
+            page,
+            limit,
+            query
+        });
+    } else {
+        return res.render('products', {
+            status: "success",
+            playload: products, 
+            totalPages: totalPages,
+            hasPrevPage: hasPrevPage,
+            hasNextPage: hasNextPage,
+            prevPage: prevPage,
+            nextPage: nextPage,
+            page,
+            limit,
+            query
+        });
     }
-
-    res.status(200).render("products", {
-        status: "success",
-        playload: products, 
-        totalPages: totalPages,
-		hasPrevPage: hasPrevPage,
-		hasNextPage: hasNextPage,
-		prevPage: prevPage,
-		nextPage: nextPage,
-        page,
-        limit,
-        query
-    });
 
 });
 
