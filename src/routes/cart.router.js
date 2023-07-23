@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ProductManager from '../dao/fileManagers/cartManager.js';             // FILE SYSTEM
-import Carts from "../dao/dbManagers/carts.js";             // MONGO DB
+import Carts from "../dao/dbManagers/carts.js";                             // MONGO DB
+import { cartModel } from "../dao/models/carts.js";
 
 const router=Router();
 const filePath ='../files/carrito.json'
@@ -35,17 +36,38 @@ router.post ('/:cid/product/:pid', async(req,res)=>{
 
 //      MONGODB
 
+
+/*
+
 router.get ('/', async(req, res)=> {
     let carts = await cartManager.getCart();
     if(!carts) return res.status(500).status({status:"error", error:"No se pudo obtener los datos "});
     res.send({status:"success", playload: carts});
 })
 
+*/
+
+// Agregar carrito
+
 router.post('/', async(req, res)=> {
+    /*
     let products = req.body[0].products;
     let quantities = req.body[0].quantities;
     let result = await cartManager.addCart(products, quantities)
     res.send({status:"success", playload: result})
+    */
+    let products = req.body;
+    let result = await cartModel.create(products)
+    res.send({ status: "success", payload: result });
+})
+
+// Eliminar un producto de un determinado carrito 
+
+router.delete('/:cid/products/:pid', async(req, res) => {
+    let cart = await cartModel.findOne({_id:req.params.cid}) 
+    await cartModel.findByIdAndUpdate(req.params.cid, {$pull: {products: {_id: req.params.pid}}})
+    const result = await cartModel.find();
+    res.send({ status: "success", message: `Se eliminó el producto ${req.params.pid}`, payload: result }); 
 })
 
 export default router;
