@@ -47,6 +47,20 @@ router.get ('/', async(req, res)=> {
 
 */
 
+// Consultar carritos
+
+router.get('/', async(req, res)=> {
+    const result = await cartModel.find();
+    res.send({ status: "success", payload: result });
+})
+
+// Consultar un carrito específico 
+
+router.get('/:cid', async(req, res)=> {
+    let result = await cartModel.findById(req.params.cid).populate('products._id');
+    res.send({ status: "success", payload: result });
+})
+
 // Agregar carrito
 
 router.post('/', async(req, res)=> {
@@ -68,6 +82,37 @@ router.delete('/:cid/products/:pid', async(req, res) => {
     await cartModel.findByIdAndUpdate(req.params.cid, {$pull: {products: {_id: req.params.pid}}})
     const result = await cartModel.find();
     res.send({ status: "success", message: `Se eliminó el producto ${req.params.pid}`, payload: result }); 
+})
+
+// Actualizar lista de productos en un carrito
+
+router.put('/:cid', async(req, res) => {
+    let newListProd = req.body;
+    await cartModel.findByIdAndUpdate(req.params.cid, {$unset: {products: 1}})
+    await cartModel.findByIdAndUpdate(req.params.cid, {$push: {products: newListProd.products}})
+    const result = await cartModel.find();
+    res.send({ status: "success", message: 'Se actualizó la lista de productos', payload: result }); 
+    
+})
+
+// Actualizar cantidad de un producto en un carrito
+
+router.put('/:cid/products/:pid', async(req, res) => {
+    let cartId = req.params.cid;
+    let prodId = req.params.pid;
+    let newQty = req.body.quantity;
+    await cartModel.findByIdAndUpdate(cartId, {$pull: {products: {_id: prodId}}})
+    await cartModel.findByIdAndUpdate(cartId, {$push: {products: {_id: prodId, quantity: newQty}}})
+    const result = await cartModel.find();
+    res.send({ status: "success", message: `Se actualizó la cantidad del producto ${prodId}`, payload: result }); 
+})
+
+// Eliminar todos los productos de un carrito 
+
+router.delete('/:cid', async(req, res) => {
+    await cartModel.findByIdAndUpdate(req.params.cid, {$unset: {products: 1}})
+    const result = await cartModel.find();
+    res.send({ status: "success", message: 'Se eliminaron los productos del carrito', payload: result }); 
 })
 
 export default router;
