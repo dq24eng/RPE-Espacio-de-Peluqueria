@@ -1,5 +1,7 @@
 <div class="listProducts">
     <h1>Lista de Productos</h1>
+    <h3>Bienvenido {{user.name}}! </h3>
+    <h3>Rol: {{user.role}} </h3>
     {{#if isThereProducts}}
         {{#each productos}}
         <div>

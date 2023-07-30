@@ -1,26 +1,38 @@
 <div>
+    <h1>Lista de Productos</h1>
+    <button> <a href="/api/sessions/logout">Log out</a> </button>
+</div>
+
+<h3>Bienvenido {{user.name}}! </h3>
+<h3>Rol: {{user.role}} </h3>
+<div>
     {{#each playload}}
         <div>
             <p> Nombre: {{title}} </p>
             <p> Descripción: {{description}} </p>
             <p> Categoría: {{category}} </p>
             <p> Precio: {{price}} </p>
+            <a href="./products/{{this._id}}">Ver producto</a>
+			<a href="./api/carts/{{../cart}}/product/{{this._id}}"> Agregar al carrito </a>
             <p> ____________________________________________________________________________________________________________ </p>
         </div>
     {{/each}}
 
     <div>
         {{#if hasPrevPage}}
-            <a href="/api/products?query={{query}}&limit={{limit}}&page={{prevPage}}&sort={{sort}}">
+            <a href="/products?query={{query}}&limit={{limit}}&page={{prevPage}}&sort={{sort}}">
                 <button>Anterior</button>
             </a>
         {{/if}}
 
         {{#if hasNextPage}}
-            <a href="/api/products?query={{query}}&limit={{limit}}&page={{nextPage}}&sort={{sort}}">
+            <a href="/products?query={{query}}&limit={{limit}}&page={{nextPage}}&sort={{sort}}">
                 <button>Siguiente</button>
             </a>
         {{/if}}
 	</div>
+    
 </div>
+
+
 

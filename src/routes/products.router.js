@@ -1,7 +1,6 @@
 import { Router } from "express";
 import ProductManager from '../dao/fileManagers/productManager.js';          // FILE SYSTEM
 import Products from "../dao/dbManagers/products.js";                        // MONGO DB
-import { productModel } from "../dao/models/products.js";
 
 const router=Router();
 const filePath ='../files/products-file.json'
@@ -86,56 +85,6 @@ router.get ('/', async(req, res)=> {
     res.send({status:"success", playload: products});
 })
 */
-
-router.get ('/', async(req, res) => {
-
-    let {page=1, limit=10, query , sort} = req.query;
-    // Variables sin filtrar que se reciben del método get
-    const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages} = 
-        await productModel.paginate({}, {limit, page, lean: true});
-    const products = docs;
-    // Variable filtrada por categoría que se puede recibir del método get
-    const prodFiltrados = await productModel.paginate({category: query}, {limit, page, lean: true})
-    // Ordenación sort 
-    if(sort == 'asc') {
-        prodFiltrados.docs.sort(((a,b) => a.price - b.price));  // Ordenamiento de menor a mayor por precio
-        products.sort(((a,b) => a.price - b.price));
-    } else if (sort == 'desc') {
-        prodFiltrados.docs.sort(((a,b) => b.price - a.price));  // Ordenamiento de mayor a menor por precio
-        products.sort(((a,b) => b.price - a.price));
-    }
-
-    if (prodFiltrados.docs.length > 0) {
-        return res.render('products', {
-            status: "success",
-            playload: prodFiltrados.docs,  // <- Datos filtrados por categoría 
-            totalPages: prodFiltrados.totalPages,
-            hasPrevPage: prodFiltrados.hasPrevPage,
-            hasNextPage: prodFiltrados.hasNextPage,
-            prevPage: prodFiltrados.prevPage,
-            nextPage: prodFiltrados.nextPage,
-            page,
-            limit,
-            query,
-            sort
-        });
-    } else {
-        return res.render('products', {
-            status: "success",
-            playload: products, 
-            totalPages: totalPages,
-            hasPrevPage: hasPrevPage,
-            hasNextPage: hasNextPage,
-            prevPage: prevPage,
-            nextPage: nextPage,
-            page,
-            limit,
-            query,
-            sort
-        });
-    }
-
-});
 
 router.post('/', async(req, res)=> {
     let {title, description, price, thumbnail, code, stock, status, category} = req.body;

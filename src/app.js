@@ -2,6 +2,9 @@
 import express from "express";
 import __dirname from './utils.js';
 import handlebars from 'express-handlebars';
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
 import { Server } from "socket.io";
 import ProductManager from "./dao/fileManagers/productManager.js";
 import MessagesManager from "./dao/dbManagers/messages.js"
@@ -10,8 +13,7 @@ import viewRouter from './routes/views.router.js';
 import productsRouter from './routes/products.router.js';
 import cartRouter from './routes/cart.router.js';
 import messagesRouter from './routes/messages.router.js';
-
-import mongoose from "mongoose";
+import sessionRouter from './routes/sessions.router.js';
 
 //Variables
 const PORT = 8080; // Puerto
@@ -31,6 +33,16 @@ export default socketServer;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(`${__dirname}/public`));
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl:"mongodb+srv://dario240494:IwPwUUKQ664uucqU@ecommercedb.8mcyypf.mongodb.net/?retryWrites=true&w=majority",
+        mongoOptions:{ useNewUrlParser:true, useUnifiedTopology:true},
+        ttl:3600
+    }),
+    secret:"UvCvEmMISEAV6",
+    resave:false,
+    saveUninitialized:false
+}));
 
 //Handlebars
 app.engine('handlebars', handlebars.engine());
@@ -87,23 +99,10 @@ export const connectMongoDB = async () => {
 connectMongoDB();
 app.use(express.json()) //Para que el navegador interprete el llamado de los APIs
 app.use('/api/products', productsRouter);
-app.use('/api/cart', cartRouter);
+app.use('/api/carts', cartRouter);
 app.use('/chat', messagesRouter);
+app.use('/api/sessions', sessionRouter);
 
-/*const agregarProducto = async () => {
-    // (title, description, price, thumbnail, code, stock, status=true, category)
-    await manejadorProductos.addProduct("Nutricion Reparadora PRIMONT 20mg", "Primont Nutri Reparadora Tratamiento Capilar Monodosis",650,["../src/public/img/nutri20.jpg"],"NUTR20",24, true, "Nutriciones")
-    await manejadorProductos.addProduct("Bio Balance Crema Peinar Vegana 250mg", "Base a elementos naturales de origen vegetal",1680,["../src/public/img/bio250.jpg"],"BIO250",2, true, "Crema")
-    await manejadorProductos.addProduct("Tratamiento Hialu C 410mg", "Con ácido hialuronico",2650,["../src/public/img/hialuc410.jpg"],"TRH410",2, true, "Tratamientos")
-    await manejadorProductos.addProduct("Primont Color Kit + Oxidantes", "Aporta suavidad, brillo, resistencia y cobertura al cabello.",1960,["../src/public/img/colox67.jpg"],"KITCOX",12, true, "Color-Tinturas")
-    await manejadorProductos.addProduct("Aceite Argan Tratamiento Capilar 60ml", "Oil Sérum Primont Maroc Oil",2200,["../src/public/img/acei060.jpg"],"ACE060",23, true, "Tratamientos")
-}
 
-agregarProducto();*/
-
-// manejadorProductos.getProducts();
-// manejadorProductos.getProductsById(1002);
-// manejadorProductos.updateProduct(1000, {"price":1700, "code": "TRL715"});
-// manejadorProductos.deleteProduct(1000);
 
 
