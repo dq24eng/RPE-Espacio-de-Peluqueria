@@ -15,6 +15,9 @@ import cartRouter from './routes/cart.router.js';
 import messagesRouter from './routes/messages.router.js';
 import sessionRouter from './routes/sessions.router.js';
 
+import initializedPassport from "./config/passport.config.js";
+import passport from "passport";
+
 //Variables
 const PORT = 8080; // Puerto
 const app = express(); // Variable que se encarga de acceder a todas las condiciones 
@@ -43,6 +46,11 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }));
+
+//Passport 
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Handlebars
 app.engine('handlebars', handlebars.engine());

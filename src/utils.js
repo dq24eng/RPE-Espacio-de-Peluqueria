@@ -1,6 +1,12 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import multer from "multer";
+import bcrypt, { genSaltSync } from 'bcrypt'; // Esta librería convierte las passwords en un hash, luego, cuando un usario se logea, la conotraseña que coloca la convierte en un hash y entonces compara el nuevo hash con el anteriormente generado para ese user, si coinciden, el login es correcto. 
+
+//Llamado para creación de hash
+export const createHash = password => bcrypt.hashSync(password, genSaltSync(10));
+//Validacion de datos
+export const isValidPassword =(user, password) => bcrypt.compareSync(password, user.password);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

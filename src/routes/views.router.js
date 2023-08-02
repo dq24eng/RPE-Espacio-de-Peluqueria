@@ -143,8 +143,17 @@ router.get('/register', (req, res) => {
     res.render("register")
 })
 
+// CREAR VISTA FAILREGISTER
+router.get('/failRegister', (req, res) => {
+    res.render("failRegister")
+});
+
 router.get('/login', (req, res) => {
     res.render("login")
+})
+
+router.get('/restart', (req, res) => {
+    res.render("restart")
 })
 
 /*
