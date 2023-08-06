@@ -6,6 +6,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
+import 'dotenv/config';
+
 import ProductManager from "./dao/fileManagers/productManager.js";
 import MessagesManager from "./dao/dbManagers/messages.js"
 
@@ -38,11 +40,12 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.static(`${__dirname}/public`));
 app.use(session({
     store: MongoStore.create({
-        mongoUrl:"mongodb+srv://dario240494:IwPwUUKQ664uucqU@ecommercedb.8mcyypf.mongodb.net/?retryWrites=true&w=majority",
+        //mongoUrl:"mongodb+srv://dario240494:IwPwUUKQ664uucqU@ecommercedb.8mcyypf.mongodb.net/?retryWrites=true&w=majority",
+        mongoUrl:`mongodb+srv://${process.env.USER_CREDENTIAL}:${process.env.SECRET_KEY_DB}@${process.env.DATABASE_NAME}.8mcyypf.mongodb.net/?retryWrites=true&w=majority`,
         mongoOptions:{ useNewUrlParser:true, useUnifiedTopology:true},
         ttl:3600
     }),
-    secret:"UvCvEmMISEAV6",
+    secret:process.env.SECRET_KEY_SESSION,
     resave:false,
     saveUninitialized:false
 }));
@@ -58,7 +61,7 @@ app.set('views', __dirname+'/views');
 app.set('view engine', 'handlebars');
 app.use('/', viewRouter)
 app.use('/home', viewRouter)
-    
+
 // Socket.io
 
 socketServer.on('connection', async socket =>{
@@ -88,7 +91,7 @@ socketServer.on('connection', async socket =>{
 //mongoose.set('strictQuery', false)
 const config = {
     mongoDB: {
-        URL: "mongodb+srv://dario240494:IwPwUUKQ664uucqU@ecommercedb.8mcyypf.mongodb.net/?retryWrites=true&w=majority",
+        URL: `mongodb+srv://${process.env.USER_CREDENTIAL}:${process.env.SECRET_KEY_DB}@${process.env.DATABASE_NAME}.8mcyypf.mongodb.net/?retryWrites=true&w=majority`,
         options: {
             useNewUrlParser: true,
             useUnifiedTopology: true,

@@ -1,8 +1,9 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../dao/models/Users.model.js"
+import userModel from "../dao/models/Users.model.js";
 import {createHash, isValidPassword} from "../utils.js";
-import GitHubStrategy from "passport-github2"
+import GitHubStrategy from "passport-github2";
+import 'dotenv/config';
 
 const LocalStrategy = local.Strategy;
 const initializedPassport = ()=> {
@@ -23,10 +24,8 @@ const initializedPassport = ()=> {
 
     passport.use('login', 
         new LocalStrategy({passReqToCallback:true, usernameField: 'email'}, async (req, username, password, done) => {
-            //const { first_name,last_name,email, age, role} = req.body;
             try {   
                 const user = await userModel.findOne({ email: username });
-                //console.log(user)
                 if (!user) return done(null, false, { message: 'User doesnt exist' });
                 if (!isValidPassword(user, password)) {
                     console.log("Invalid credentials")
@@ -40,11 +39,18 @@ const initializedPassport = ()=> {
     )      
 
     passport.use('github', 
+        
         new GitHubStrategy({
+            /*
             clientID: "Iv1.50728fd82d48f4c8",
             clientSecret: "906090a74798de0101644155a0136df27affbb38",
             callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+            */
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: process.env.CALLBACK_URL,
         }, async (accessToken, refreshToken, profile, done)  => {
+            console.log(profile);
             try{
                 let user = await userModel.findOne({email:profile._json.email})
                 if (!user) {
