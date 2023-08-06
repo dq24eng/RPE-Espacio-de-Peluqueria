@@ -57,7 +57,8 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname+'/views');
 app.set('view engine', 'handlebars');
 app.use('/', viewRouter)
-
+app.use('/home', viewRouter)
+    
 // Socket.io
 
 socketServer.on('connection', async socket =>{

@@ -25,7 +25,7 @@ router.post ('/register', passport.authenticate('register', {failureRedirect:'/f
     res.send({status:"success", message:"User Register"})
 })
 
-router.get('failRegister', async(req, res)=> {
+router.get('/failRegister', async(req, res)=> {
     res.send({error:"fail register, try again"})
 })
 
@@ -44,7 +44,7 @@ router.post('/login',async(req,res)=>{
     res.send({status:"success",payload:req.session.user, message:"Usuario creado"})
 
 })
-*/
+
 
 router.post('/login',async(req,res)=>{
 
@@ -58,6 +58,11 @@ router.post('/login',async(req,res)=>{
     req.session.user = user;
     res.send({status: "sucess", payload: user})
 
+})
+*/
+
+router.post('/login', passport.authenticate('login', {failureRedirect: '/failLogin'}), async(req, res) => {
+    res.send({status: "success", message:"Successfull login"}) 
 })
 
 router.get('/logout', (req, res) => {
@@ -85,5 +90,13 @@ router.post('/restart',async(req,res)=> {
 
     res.send({status: "sucess", message: "Contraseña restaurada"});
 })
+
+router.get('/github', passport.authenticate('github', {scope:['user:email']}), async (req, res ) => {})
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect:'/login'}), async (req, res ) => {
+    req.session.user = req.user;
+    res.redirect('/products')
+})
+
 
 export default router;

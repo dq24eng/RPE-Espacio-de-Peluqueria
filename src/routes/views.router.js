@@ -3,11 +3,18 @@ import express from "express"
 import ProductManager from "../dao/fileManagers/productManager.js"
 import socketServer from "../app.js";
 import { productModel } from "../dao/models/products.js";
+import userModel from "../dao/models/Users.model.js";
 
 // Variables 
 const router = express.Router();
 const filePath ='../files/products-file.json';
 const manejadorProductos = new ProductManager (filePath);
+
+/*
+router.get('/home', (req, res) => {
+    res.render("home")
+});
+*/
 
 router.get ('/', async (req, res)=> {
     const productos = await manejadorProductos.getProducts();
@@ -62,7 +69,8 @@ router.get ('/products', async(req, res) => {
     // Variables query
     let {page=1, limit=10, query , sort} = req.query;
     // User loggeado en la session actual
-    const user = req.session.user;
+    const user = await userModel.findOne({ _id: req.session.passport.user });
+    //console.log(user)
     // Variables sin filtrar que se reciben del método get
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages} = 
         await productModel.paginate({}, {limit, page, lean: true});
@@ -81,7 +89,7 @@ router.get ('/products', async(req, res) => {
 
     try {
         // Corroboramos si el usuario está loggeado
-        if(!user) {
+        if(!req.session.passport.user) {
             res.render("login") // Enviamos el usuario a la pagina de Login no está loggeado 
         } else {
             if (prodFiltrados.docs.length > 0) { // Pagina products con filtro aplicado 
@@ -97,7 +105,8 @@ router.get ('/products', async(req, res) => {
                     limit,
                     query,
                     sort,
-                    user,
+                    first_name: user.first_name,
+                    role: user.role
                 });
             } else { // Pagina que muestra todos los productos 
                 return res.render('products', {
@@ -112,7 +121,8 @@ router.get ('/products', async(req, res) => {
                     limit,
                     query,
                     sort,
-                    user
+                    first_name: user.first_name,
+                    role: user.role
                 });
             }   
         }
