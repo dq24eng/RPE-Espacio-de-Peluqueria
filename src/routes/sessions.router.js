@@ -1,7 +1,8 @@
 import { Router } from "express";
 import userModel from "../dao/models/Users.model.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword, authToken, generateToken } from "../utils.js";
 import passport from "passport";
+import auth from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -44,7 +45,8 @@ router.post('/login',async(req,res)=>{
     res.send({status:"success",payload:req.session.user, message:"Usuario creado"})
 
 })
-
+*/
+/*
 
 router.post('/login',async(req,res)=>{
 
@@ -62,7 +64,67 @@ router.post('/login',async(req,res)=>{
 */
 
 router.post('/login', passport.authenticate('login', {failureRedirect: '/failLogin'}), async(req, res) => {
+    const {email, password} = req.body;
+    if(!req.user) return res.status(400).send({status: "error", error: "Incorrect password"})
+    req.session.user = {
+        first_name: req.user.first_name, 
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email
+    }
     res.send({status: "success", message:"Successfull login"}) 
+})
+
+router.get('/failLogin', async (req, res) => {
+    console.log("Failed Strategy")
+    res.send({error: "failed"})
+})
+
+router.post('/loginjwt',passport.authenticate('login', {failureRedirect: '/failLogin'}), async(req,res)=>{
+    const {email,password} = req.body;
+    //console.log(email+"  "+password)
+    const user =await userModel.findOne({email});
+    console.log(user)
+    if(!user) return res.status(400).send({status:"error",error:"Invalid credentials"});
+    req.session.user=user;
+    const access_token = generateToken(user);
+    req.headers.authorization = access_token;
+    res.send({status:"success", access_token});
+})
+
+router.post('/registerjwt',async (req,res)=>{
+    const { first_name,last_name,email, age, password} = req.body;
+    const exists = await userModel.findOne({email});
+    if(exists) return res.status(400).send({status:"error",error:"User already exists"});
+    const user = {
+        first_name,
+        last_name,
+        email,
+        age,
+        password
+    }
+    //users.push(user);
+    let result = await userModel.create(user);
+    const access_token = generateToken(user);
+    res.send({status:"success",access_token});
+
+})
+
+router.post('/loginjwt2', async (req,res)=>{
+    const {email,password} = req.body;
+    const user =await userModel.findOne({email});
+    if (user) {
+        req.session.user = user;
+        const access_token = generateToken({email});
+        req.headers.authorization = access_token;
+        res.json({access_token}) //Entrega los datos de acceso 
+    }
+})
+
+// HACER REGISTER CON JWT 
+
+router.get('/current',auth,(req,res)=>{
+    res.render("profile", {user: req.session.user});
 })
 
 router.get('/logout', (req, res) => {
@@ -97,6 +159,5 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect:'
     req.session.user = req.user;
     res.redirect('/products')
 })
-
 
 export default router;

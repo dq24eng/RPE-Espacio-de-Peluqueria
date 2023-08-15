@@ -69,8 +69,9 @@ router.get ('/products', async(req, res) => {
     // Variables query
     let {page=1, limit=10, query , sort} = req.query;
     // User loggeado en la session actual
+    console.log(req.session.user)
     const user = await userModel.findOne({ _id: req.session.passport.user });
-    //console.log(user)
+
     // Variables sin filtrar que se reciben del método get
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages} = 
         await productModel.paginate({}, {limit, page, lean: true});
@@ -162,8 +163,37 @@ router.get('/login', (req, res) => {
     res.render("login")
 })
 
+router.get('/api/sessions/login', (req, res) => {
+    res.render("login")
+})
+
+router.get('/api/sessions/loginjwt2', (req, res) => {
+    res.render("login")
+})
+
+// CREAR VISTA FAILLOGIN
+router.get('/failLogin', (req, res) => {
+    res.render("failLogin")
+});
+
 router.get('/restart', (req, res) => {
     res.render("restart")
+})
+
+router.get('/loginjwt', (req, res) => {
+    res.render("login")
+})
+
+router.get('/registerjwt', (req, res) => {
+    res.render("register")
+})
+
+router.get('/profile', (req, res) => {
+    res.render("profile", {user: req.session.user});
+})
+
+router.get('/loginjwt2', (req, res) => {
+    res.render("login")
 })
 
 /*
