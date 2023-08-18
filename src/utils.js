@@ -51,5 +51,13 @@ export const authToken = (req, res, next) => {  //Función responsable de la aut
     })
 }
 
+// Cookie extractor
+
+export const cookieExtractor =(req)=> {
+    let token = null;
+    if(req && req.cookies) token = req.cookies["CoderCookie"]
+    return token
+}
+
 export const uploader =multer({storage})
 export default __dirname;

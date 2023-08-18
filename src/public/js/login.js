@@ -37,8 +37,11 @@ form.addEventListener('submit', async (e) =>{
             },
             body: JSON.stringify(loginPayload)
         });
+        /*
         const {access_token} = await response.json(); 
         window.localStorage.setItem('token', access_token);
+        */
+        console.log(response)
         window.location.href = '/profile'
     } catch (error) {
         console.log(error)

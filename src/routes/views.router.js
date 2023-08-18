@@ -5,6 +5,7 @@ import socketServer from "../app.js";
 import { productModel } from "../dao/models/products.js";
 import userModel from "../dao/models/Users.model.js";
 
+
 // Variables 
 const router = express.Router();
 const filePath ='../files/products-file.json';
@@ -203,6 +204,12 @@ router.get('/', (req, res) => {
         user: req.session.user // Muestra los datos del profile -> nombre, email y edad 
     });
 });
+*/
+
+/*
+router.get('/api/sessions/current',auth("user"),(req,res)=>{
+    res.render("profile", {user: req.session.user});
+})
 */
 
 export default router;

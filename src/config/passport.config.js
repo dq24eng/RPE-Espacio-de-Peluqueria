@@ -1,11 +1,16 @@
 import passport from "passport";
+import passportJWT from "passport-jwt";
 import local from "passport-local";
 import userModel from "../dao/models/Users.model.js";
 import {createHash, isValidPassword} from "../utils.js";
 import GitHubStrategy from "passport-github2";
 import 'dotenv/config';
+import {cookieExtractor} from "../utils.js"
 
 const LocalStrategy = local.Strategy;
+const JwtStrategy = passportJWT.Strategy;
+const ExtractJwt = passportJWT.ExtractJwt;
+
 const initializedPassport = ()=> {
 
     passport.use('register', 
@@ -85,6 +90,23 @@ const initializedPassport = ()=> {
             }
         })
     )*/      
+
+    passport.use('jwt', 
+        new JwtStrategy({
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: process.env.JWT_KEY
+        },
+        async(jwt_payload, done )=> {
+            try {
+                //console.log(jwt_payload)
+                const user = await userModel.findOne({email: jwt_payload.user.email}); 
+                if (!user) return done(null, false, {message: "User not found"});
+                return done(null, jwt_payload);
+            } catch (error) {
+                return done(error)
+            }
+        }
+    ))
 
     passport.serializeUser((user, done)=> {
         done(null, user._id);

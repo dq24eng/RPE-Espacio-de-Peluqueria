@@ -3,8 +3,10 @@ import userModel from "../dao/models/Users.model.js";
 import { createHash, isValidPassword, authToken, generateToken } from "../utils.js";
 import passport from "passport";
 import auth from "../middlewares/auth.middleware.js";
+import passportControl from "../middlewares/passport.controller.js";
 
 const router = Router();
+const authMiddleware = [ passportControl('jwt'), auth('user') ]
 
 /*
 router.post('/register',async(req,res)=>{
@@ -113,18 +115,38 @@ router.post('/registerjwt',async (req,res)=>{
 router.post('/loginjwt2', async (req,res)=>{
     const {email,password} = req.body;
     const user =await userModel.findOne({email});
+    if(!user) return res.send({message: "User not found"})
+    /*
     if (user) {
-        req.session.user = user;
+        //console.log("Login jwt2:")
+        //console.log(user)
+        req.session.user = {"email": user.email, "role": user.role};
+        //console.log(req.session.user)
         const access_token = generateToken({email});
-        req.headers.authorization = access_token;
-        res.json({access_token}) //Entrega los datos de acceso 
+        //req.headers.authorization = access_token;
+        res.cookie("CoderCookie", access_token, {
+            maxAge: 60*60*1000,
+            httpOnly: true 
+        })//.send({token: access_token})
+        res.json({payload: "OK"}) //Entrega los datos de acceso 
     }
+    */
+    req.session.user = {"email": user.email, "role": user.role};
+    //console.log(req.session.user)
+    const access_token = generateToken({email});
+    //req.headers.authorization = access_token;
+    res.cookie("CoderCookie", access_token, {
+        maxAge: 60*60*1000,
+        httpOnly: true 
+    })//.send({token: access_token})
+    res.json({payload: "OK"}) //Entrega los datos de acceso 
 })
 
 // HACER REGISTER CON JWT 
 
-router.get('/current',auth,(req,res)=>{
-    res.render("profile", {user: req.session.user});
+router.get('/current',authMiddleware,(req,res)=>{
+    //res.render("profile", {user: req.session.user});
+    res.send(req.session.user);
 })
 
 router.get('/logout', (req, res) => {

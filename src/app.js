@@ -7,6 +7,7 @@ import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 import 'dotenv/config';
+import cookieParser from "cookie-parser";
 
 import ProductManager from "./dao/fileManagers/productManager.js";
 import MessagesManager from "./dao/dbManagers/messages.js"
@@ -54,6 +55,7 @@ app.use(session({
 initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 //Handlebars
 app.engine('handlebars', handlebars.engine());
