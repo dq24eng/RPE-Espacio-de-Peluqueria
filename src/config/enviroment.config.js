@@ -13,7 +13,10 @@ const config = {
     GITHUB_CLIENT_ID: process.env.CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.CLIENT_SECRET,
     GITHUB_CALLBACK_URL: process.env.CALLBACK_URL,
-    JWT_KEY: process.env.JWT_KEY
+    JWT_KEY: process.env.JWT_KEY,
+    JWT_EXPIRATION: process.env.JWT_EXPIRATION,
+    COOKIE_EXTRACTOR_SCTKEY: process.env.COOKIE_EXTRACTOR_SCTKEY,
+    HASH_LENGTH: process.env.HASH_LENGTH
 };
 
 export default config;

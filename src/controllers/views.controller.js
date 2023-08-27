@@ -24,6 +24,18 @@ class viewsController {
             res.status(400).json({error: error.message, status: "failed"})
         }
     }
+
+    async getProductView(req, res) {
+        const id= req.params.pid;
+        try {
+            const product = await viewsService.getProduct(id); 
+            console.log(product[0])
+            res.render('product', product[0]);
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+        
+    }
 }
 
 export default new viewsController();

@@ -2,7 +2,7 @@ import productModel from "../dao/models/products.model.js";
 
 class viewsService {
 
-    // Products View
+    // List of products View
     async getProducts(page, limit, query, sort){
         try {
             // Variables sin filtrar que se reciben del método get
@@ -21,6 +21,15 @@ class viewsService {
                 products.sort(((a,b) => b.price - a.price));
             }
             return prodFiltrados.docs.length > 0 ? {prodFiltrados, pages} : {products, pages}
+        } catch (error) {
+            throw new Error (error.message);
+        }
+    }
+
+    // Product View
+    async getProduct(id) {
+        try {
+            return productModel.find({_id: id}).lean();
         } catch (error) {
             throw new Error (error.message);
         }

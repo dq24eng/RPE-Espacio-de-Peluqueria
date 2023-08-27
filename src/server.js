@@ -4,13 +4,18 @@ import session from "express-session";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import handlebars from 'express-handlebars';
+import cookieParser from "cookie-parser";
 // System configurations
 import __dirname from './utils.js';
 // Environment variables
 import config from './config/enviroment.config.js';
+// Passport 
+import passport from "passport";
+import initializedPassport from "./config/passport.config.js";
 // Routers 
 import productsRouter from "./routers/products.router.js";
 import viewsRouter from "./routers/views.router.js";
+import sessionsRouter from "./routers/sessions.router.js";
 
 // Server 
 const app = express(); 
@@ -41,9 +46,17 @@ app.use(session({
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname+'/views');
 app.set('view engine', 'handlebars');
-app.use('/', viewsRouter.getRouter())
+
+//Passport 
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
 
 // Routes 
-app.use('/api/products', productsRouter.getRouter())
+app.use('/', viewsRouter.getRouter());
+app.use('/api/products', productsRouter.getRouter());
+app.use('/api/sessions', sessionsRouter.getRouter());
+
 
 
