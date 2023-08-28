@@ -1,0 +1,12 @@
+<div>
+    {{#if user}}
+	    <p>Bienvenido a Romina Ponces Estilista <strong>{{user.email}}</strong></p>
+	    <p>Tu rol es: {{user.role}}</p>
+        <button> <a href="/api/sessions/logout">Log out</a> </button>
+	{{else}}
+        <p>Bienvenido a Romina Ponces Estilista</p>
+        <p>¿No estás registrado? <a href="/register">Regístrate aquí</a></p>
+        <p>¿Ya tienes una cuenta? <a href="/login">Ingresar</a></p>
+        <p><a href="/api/sessions/github"><button>Autenticarse con Github</button></a></p>
+    {{/if}}
+</div>

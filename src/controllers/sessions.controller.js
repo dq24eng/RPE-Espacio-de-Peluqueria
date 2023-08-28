@@ -24,7 +24,20 @@ class sessionController {
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }
-        
+    }
+
+    async logout (req, res) {
+        try {
+            req.session.destroy((error) => {
+                if (!error) {
+                    return res.status(200).render("login");
+                } else {
+                    return res.status(500).send({ status: "Logout failed", payload: error });
+                }
+            });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
     }
 }
 

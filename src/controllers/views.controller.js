@@ -37,7 +37,8 @@ class viewsController {
     }
 
     async getLoginView(req, res) {
-        if (req.session.user) return res.redirect('/');
+        //if (req.session.user) return res.redirect('/');
+        console.log(req.session.user)
         try {
             res.render('login')
         } catch (error) {
@@ -50,6 +51,14 @@ class viewsController {
         console.log(req.session.user)
         try {
             res.render('register')
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async home(req, res) {
+        try {
+            res.render('home', {user: req.session.user})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

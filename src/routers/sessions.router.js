@@ -11,6 +11,7 @@ class sessionsRouter {
             passport.authenticate('register', {failureRedirect:'/failRegister'}), 
             sessionsController.register
         );
+        this.startSession.get('/logout', sessionsController.logout);
     }
     getRouter() {
         return this.startSession;
