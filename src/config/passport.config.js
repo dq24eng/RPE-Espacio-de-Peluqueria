@@ -52,14 +52,14 @@ const initializedPassport = () => {
             clientSecret: config.GITHUB_CLIENT_SECRET,
             callbackURL: config.GITHUB_CALLBACK_URL,
         }, async (accessToken, refreshToken, profile, done)  => {
-            console.log(profile);
+            //console.log(profile);
             try{
                 let user = await userModel.findOne({email:profile._json.email})
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name,
                         last_name: '',
-                        email: profile._json.email,
+                        email: first_name,
                         age: '',
                         password: '',
                     } 

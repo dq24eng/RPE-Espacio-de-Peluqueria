@@ -35,10 +35,20 @@ class sessionController {
                     return res.status(500).send({ status: "Logout failed", payload: error });
                 }
             });
-        } catch (err) {
-            return res.status(500).json({ error: err.message });
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
         }
     }
+
+    async githubcallback (req, res) {
+        try {
+            req.session.user = req.user;
+            res.redirect('/')
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
 }
 
 export default new sessionController();

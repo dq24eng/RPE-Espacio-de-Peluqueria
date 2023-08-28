@@ -12,6 +12,11 @@ class sessionsRouter {
             sessionsController.register
         );
         this.startSession.get('/logout', sessionsController.logout);
+        this.startSession.get('/github', passport.authenticate('github', {failureRedirect:'/login'}));
+        this.startSession.get(
+            '/githubcallback', 
+            passport.authenticate('github', {failureRedirect:'/login'}), 
+            sessionsController.githubcallback);
     }
     getRouter() {
         return this.startSession;
