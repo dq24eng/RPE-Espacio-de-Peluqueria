@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 export default __dirname;
 
 //Llamado para creación de Hash
-export const createHash = password => bcrypt.hashSync(password, genSaltSync(config.HASH_LENGTH));
+export const createHash = password => bcrypt.hashSync(password, genSaltSync(parseInt(config.HASH_LENGTH)));
 //Validación de datos
 export const isValidPassword =(user, password) => bcrypt.compareSync(password, user.password);
 

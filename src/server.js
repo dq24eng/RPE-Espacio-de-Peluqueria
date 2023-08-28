@@ -35,6 +35,7 @@ export const connectMongoDB = async () => {
 };
 connectMongoDB();
 
+app.use(express.static(`${__dirname}/public`));
 app.use(session({
     store: MongoStore.create({ mongoUrl: config.MONGO_URL }),
     secret: config.SECRET_KEY_SESSION,

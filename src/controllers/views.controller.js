@@ -3,6 +3,7 @@ import viewsService from "../services/views.service.js";
 class viewsController {
     async getProductsView(req, res) {
         try {
+            if (!req.session.user) return res.redirect('/login');
             let {page=1, limit=10, query , sort} = req.query;
             const {products, pages} = await viewsService.getProducts(page, limit, query, sort)
             return res.render('products', {
@@ -29,12 +30,29 @@ class viewsController {
         const id= req.params.pid;
         try {
             const product = await viewsService.getProduct(id); 
-            console.log(product[0])
             res.render('product', product[0]);
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }
-        
+    }
+
+    async getLoginView(req, res) {
+        if (req.session.user) return res.redirect('/');
+        try {
+            res.render('login')
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async getRegisterView(req, res) {
+        if (req.session.user) return res.redirect('/');
+        console.log(req.session.user)
+        try {
+            res.render('register')
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
     }
 }
 

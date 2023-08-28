@@ -6,6 +6,8 @@ class viewsRouter {
         this.startView = Router(); 
         this.startView.get("/products", viewsController.getProductsView); 
         this.startView.get("/products/:pid", viewsController.getProductView); 
+        this.startView.get("/login", viewsController.getLoginView);
+        this.startView.get("/register", viewsController.getRegisterView); 
     }
     getRouter() {
         return this.startView;
