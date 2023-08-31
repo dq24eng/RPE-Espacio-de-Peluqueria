@@ -16,6 +16,7 @@ import initializedPassport from "./config/passport.config.js";
 import productsRouter from "./routers/products.router.js";
 import viewsRouter from "./routers/views.router.js";
 import sessionsRouter from "./routers/sessions.router.js";
+import cartsRouter from "./routers/carts.router.js";
 
 // Server 
 const app = express(); 
@@ -58,6 +59,7 @@ app.use(cookieParser());
 app.use('/', viewsRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter.getRouter());
+app.use('/cart', cartsRouter.getRouter());
 
 
 
