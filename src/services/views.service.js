@@ -1,4 +1,4 @@
-import productModel from "../dao/models/products.model.js";
+import productModel from "../models/dao/mongo/model/products.model.js"
 
 class viewsService {
 

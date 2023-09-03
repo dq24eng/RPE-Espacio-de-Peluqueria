@@ -1,4 +1,4 @@
-import userModel from "../dao/models/users.model.js";
+import userModel from "../models/dao/mongo/model/users.model.js";
 import { generateToken } from "../utils.js";
 
 class sessionsService {

@@ -1,9 +1,11 @@
-import productService from '../services/product.service.js'
+//import productService from '../services/product.service.js'; 
+import {productsRepository} from '../models/repositories/repository.js';
 
 class productController {
     async getProducts(req, res) {
         try {
-            const response = await productService.getProducts(); 
+            const response = await productsRepository.getProducts(); 
+            //console.log(response)
             res.status(201).json({products: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
@@ -11,7 +13,7 @@ class productController {
     }
     async getProduct(req, res) {
         try {
-            const response = await productService.getProduct(req.params.pid); 
+            const response = await productsRepository.getProduct(req.params.pid); 
             res.status(201).json({products: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
@@ -20,7 +22,7 @@ class productController {
     async createProduct(req, res) {
         try {
             const data = req.body; 
-            const response = await productService.createProduct(data);
+            const response = await productsRepository.createProduct(data);
             res.status(201).json({product: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
@@ -30,7 +32,7 @@ class productController {
         try {
             const data = req.body; 
             const id = req.params.pid;
-            const response = await productService.updateProduct(id, data);
+            const response = await productsRepository.updateProduct(id, data);
             res.status(201).json({product: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
@@ -39,7 +41,7 @@ class productController {
     async deleteProduct(req, res) {
         try {
             const id = req.params.pid;
-            const response = await productService.deleteProduct(id);
+            const response = await productsRepository.deleteProduct(id);
             res.status(201).json({product: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})

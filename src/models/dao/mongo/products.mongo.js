@@ -1,16 +1,19 @@
-import productModel from '../models/dao/mongo/model/products.model.js'; 
+import productModel from "./model/products.model.js"
 
-class productService {
-    async getProducts () {
+export class ProductsMongoDAO{
+    constructor() {}
+
+    async getProductsDAO () {
         try {
             const response = await productModel.find();
+            if(!response) return "No products found"
             return response;
         } catch (error) {
             throw new Error (error.message);
         }
     }
 
-    async getProduct (id) {
+    async getProductDAO (id) {
         try {
             const response = await productModel.find({_id: id});
             return response.length == 0 ? "Product not found" : response
@@ -19,7 +22,7 @@ class productService {
         }
     }
 
-    async createProduct (data) {
+    async createProductDAO (data) {
         try {
             const response = await productModel.create(data); 
             return response
@@ -28,7 +31,7 @@ class productService {
         }
     }
 
-    async updateProduct (id, data) {
+    async updateProductDAO (id, data) {
         try {
             await productModel.updateOne({ _id: id }, data);
             const response = await productModel.findById(id);
@@ -38,7 +41,7 @@ class productService {
         }
     }
 
-    async deleteProduct (id) {
+    async deleteProductDAO (id) {
         try {
             await productModel.deleteOne({ _id: id });
             const response = await productModel.findById(id);
@@ -47,7 +50,6 @@ class productService {
             throw new Error (error.message);
         }
     }
-
 }
 
-export default new productService(); 
+

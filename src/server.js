@@ -59,7 +59,8 @@ app.use(cookieParser());
 app.use('/', viewsRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter.getRouter());
-app.use('/cart', cartsRouter.getRouter());
+app.use('/cart', cartsRouter.getRouter()); 
+
 
 
 

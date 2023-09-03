@@ -1,0 +1,106 @@
+[
+	{
+		"_id": "64ade5be329850a9cbd21f8d",
+		"title": "Pomada Mate Barber 50gr Primont",
+		"description": "Pomada para esculpir, moldear y texturizar.",
+		"price": 2550,
+		"thumbnail": [
+			"./img/barber.jpg"
+		],
+		"code": "BARB50",
+		"stock": 12,
+		"status": true,
+		"category": "Crema"
+	},
+	{
+		"_id": "64b082dfdff9d362af169318",
+		"title": "Bio Balance Crema Peinar Vegana 250mg",
+		"description": "Base a elementos naturales de origen vegetal",
+		"price": 1680,
+		"thumbnail": [
+			"./img/bio250.jpg"
+		],
+		"code": "BIO250",
+		"stock": 2,
+		"status": true,
+		"category": "Crema"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b826",
+		"title": "Tinturas Natural Gloss Primont 60gr x12ud",
+		"description": "Tinturas Sin Amoniaco Natural Gloss Apto Vegano Primont ",
+		"price": 6900,
+		"thumbnail": [
+			"./img/std.jpg"
+		],
+		"code": "TNT060",
+		"stock": 2,
+		"status": true,
+		"category": "Color-Tinturas"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b825",
+		"title": "Ampolla Capilar Con Ortiga 10ml Primont ",
+		"description": "Ampolla capilar en caja por 12 unidades",
+		"price": 4625,
+		"thumbnail": [
+			"./img/std.jpg"
+		],
+		"code": "AMP010",
+		"stock": 5,
+		"status": true,
+		"category": "Tratamientos"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b824",
+		"title": "Primont Máscara Capilar Reparadora Pelo Poroso 500g ",
+		"description": "El camino hacia un cabello perfecto requiere de un cuidado especial, y hoy podés lograr ese cambio de la mano de Primont. ",
+		"price": 2725,
+		"thumbnail": [
+			"./img/std.jpg"
+		],
+		"code": "PRR500 ",
+		"stock": 15,
+		"status": true,
+		"category": "Nutriciones"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b822",
+		"title": "Primont Mascara Capilar Silver Pigmento Violeta",
+		"description": "Pigmento Violeta Cabellos grises, blancos, rubios, con reflejos o platinados",
+		"price": 2800,
+		"thumbnail": [
+			"./img/pig500.jpg"
+		],
+		"code": "PIG500",
+		"stock": 5,
+		"status": true,
+		"category": "Tratamientos"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b820",
+		"title": "Primont Color Kit + Oxidantes",
+		"description": "Aporta suavidad, brillo, resistencia y cobertura al cabello.",
+		"price": 1960,
+		"thumbnail": [
+			"./img/colox67.jpg"
+		],
+		"code": "KITCOX",
+		"stock": 12,
+		"status": true,
+		"category": "Color-Tinturas"
+	},
+	{
+		"_id": "64ada7ad1b2ce8a835f5b823",
+		"title": "Tratamiento Hialu C 410mg",
+		"description": "Con ácido hialuronico",
+		"price": 3000,
+		"thumbnail": [
+			"./img/hialuc410.jpg"
+		],
+		"code": "TRH410",
+		"stock": 2,
+		"status": true,
+		"category": "Tratamientos"
+	}
+]

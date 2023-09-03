@@ -16,7 +16,8 @@ const config = {
     JWT_KEY: process.env.JWT_KEY,
     JWT_EXPIRATION: process.env.JWT_EXPIRATION,
     COOKIE_EXTRACTOR_SCTKEY: process.env.COOKIE_EXTRACTOR_SCTKEY,
-    HASH_LENGTH: process.env.HASH_LENGTH
+    HASH_LENGTH: process.env.HASH_LENGTH,
+    DATASOURCE: process.env.PERSISTENCE || ''
 };
 
 export default config;

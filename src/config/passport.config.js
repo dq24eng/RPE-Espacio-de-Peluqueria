@@ -2,7 +2,7 @@ import passport from "passport";
 import passportJWT from "passport-jwt";
 import local from "passport-local";
 import GitHubStrategy from "passport-github2";
-import userModel from "../dao/models/users.model.js";
+import userModel from "../models/dao/mongo/model/users.model.js";
 import {createHash, isValidPassword, cookieExtractor} from "../utils.js";
 import config from "./enviroment.config.js";
 
