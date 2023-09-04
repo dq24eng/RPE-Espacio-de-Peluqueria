@@ -1,5 +1,4 @@
 import userDTO from "../dto/user.dto.js"; 
-import userModel from "../dao/mongo/model/users.model.js";
 
 class SessionsRepository {
     constructor(dao) {

@@ -1,5 +1,3 @@
-import userModel from "../dao/mongo/model/users.model.js";
-
 class userDTO {
     constructor (user){
         this.name = `${user.first_name} ${user.last_name}`.trim(); 
