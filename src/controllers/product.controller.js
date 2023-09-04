@@ -1,11 +1,9 @@
-//import productService from '../services/product.service.js'; 
 import {productsRepository} from '../models/repositories/repository.js';
 
 class productController {
     async getProducts(req, res) {
         try {
             const response = await productsRepository.getProducts(); 
-            //console.log(response)
             res.status(201).json({products: response, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})

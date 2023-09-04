@@ -17,6 +17,7 @@ class sessionsRouter {
             '/githubcallback', 
             passport.authenticate('github', {failureRedirect:'/login'}), 
             sessionsController.githubcallback);
+        this.startSession.get('/current', sessionsController.current);
     }
     getRouter() {
         return this.startSession;
