@@ -6,3 +6,7 @@ import sessionsDAO from "../dao/sessions.factory.js";
 import SessionsRepository from "./sessions.repository.js"; 
 export const sessionsRepository = new SessionsRepository(sessionsDAO); 
 
+import cartsDAO from "../dao/carts.factory.js"; 
+import CartsRepository from "./carts.repository.js";
+export const cartsRepository = new CartsRepository(cartsDAO); 
+
