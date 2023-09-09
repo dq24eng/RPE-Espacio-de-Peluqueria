@@ -11,8 +11,8 @@ class CartsRepository {
         return await this.dao.getCartDAO(id);
     }
 
-    async getCartPurchase(id) {
-        return await this.dao.getCartPurchaseDAO(id);
+    async getCartPurchase(id, user) {
+        return await this.dao.getCartPurchaseDAO(id, user);
     }
 }
 
