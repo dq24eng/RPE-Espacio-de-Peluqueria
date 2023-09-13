@@ -22,8 +22,8 @@ class cartsController {
 
     async getCartPurchase (req, res) {
         try {
-            const response = await cartsRepository.getCartPurchase(req.params.cid, req.session.user); 
-            res.status(201).json({carts: response, status: "success"})
+            const ticket = await cartsRepository.getCartPurchase(req.params.cid, req.session.user); 
+            res.status(201).json({carts: ticket, status: "success"})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

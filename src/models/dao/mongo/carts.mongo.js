@@ -1,6 +1,9 @@
 import cartModel from "./model/carts.model.js"; 
 import productModel from "./model/products.model.js";
 import ticketModel from "./model/ticket.model.js";
+import userDTO from "../../dto/user.dto.js";
+import userModel from "./model/users.model.js";
+import sendEmail from "../../../utils/email.utils.js";
 
 export class CartsMongoDAO{
     constructor() {}
@@ -31,12 +34,6 @@ export class CartsMongoDAO{
             let purchaseProd=[];
             let notAddedProd=[]; 
             let amount = 0;
-            /*console.log(cart[0].products)
-            for (let k=0; k< array.length; index++) {
-                const element = array[index];
-                
-            }
-            Object.entries(cart).forEach(async ([key, value])=>{*/
                 let prods = cart[0].products; 
                 for (let i=0; i<products.length; i++) {
                     for (let j=0; j<prods.length; j++) {
@@ -54,7 +51,6 @@ export class CartsMongoDAO{
                                     "price" : products[i].price,
                                     "quantity" : prods[j].quantity
                                 }); 
-                                console.log(amount)
                                 amount = amount + (products[i].price * prods[j].quantity);
                                 await productModel.updateOne({ _id: products[i]._id }, {
                                     "title": products[i].title,
@@ -70,32 +66,23 @@ export class CartsMongoDAO{
                         }
                     }
                 }
-            //})
-            console.log(purchaseProd); 
-            console.log(notAddedProd);
             if (purchaseProd.length == 0) 
                 return `The cart is empty. The following products cannot be purchased: ${notAddedProd}`
             if (notAddedProd.length > 0) 
                 console.log(`The following products cannot be purchased: ${notAddedProd}`) 
             const date = new Date().toISOString(); 
+            const fullUser = await userModel.findOne({email: user.email});
+            const userdto = new userDTO(fullUser); 
             const ticket = {
                 "code" : `ticketcode-${date}`,
                 "purchase_datetime": new Date().toLocaleString(),
                 "purchase_products": purchaseProd,
                 "amount": amount,
-                "purchaser": user
+                "purchaser": userdto
             }
             await ticketModel.create(ticket); 
-            console.log(ticket); 
+            await sendEmail(ticket); // Envío del correo
             return ticket; 
-        } catch (error) {
-            throw new Error (error.message);
-        }
-    }
-
-    async sendTicket (purchaseProd) {
-        try {
-            
         } catch (error) {
             throw new Error (error.message);
         }

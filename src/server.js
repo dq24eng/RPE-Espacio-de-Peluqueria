@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import handlebars from 'express-handlebars';
 import cookieParser from "cookie-parser";
+import nodemailer from "nodemailer"; 
 // System configurations
 import __dirname from './utils.js';
 // Environment variables
@@ -60,6 +61,9 @@ app.use('/', viewsRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter.getRouter());
 app.use('/carts', cartsRouter.getRouter()); 
+
+//Nodemailer 
+app.get('/mail')
 
 
 
