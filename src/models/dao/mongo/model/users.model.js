@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
         default: "user",
         require: true,
     },
+    phone: String
 })
 
 const userModel = mongoose.model(userCollection, userSchema);

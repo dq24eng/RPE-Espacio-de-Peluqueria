@@ -4,6 +4,7 @@ import ticketModel from "./model/ticket.model.js";
 import userDTO from "../../dto/user.dto.js";
 import userModel from "./model/users.model.js";
 import sendEmail from "../../../utils/email.utils.js";
+import sendMessage from "../../../utils/messages.utils.js";
 
 export class CartsMongoDAO{
     constructor() {}
@@ -81,7 +82,8 @@ export class CartsMongoDAO{
                 "purchaser": userdto
             }
             await ticketModel.create(ticket); 
-            await sendEmail(ticket); // Envío del correo
+            await sendEmail(ticket);    // Envío del correo
+            await sendMessage(ticket);  // Envío de sms
             return ticket; 
         } catch (error) {
             throw new Error (error.message);

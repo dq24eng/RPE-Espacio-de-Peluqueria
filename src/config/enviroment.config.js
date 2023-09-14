@@ -19,7 +19,10 @@ const config = {
     HASH_LENGTH: process.env.HASH_LENGTH,
     DATASOURCE: process.env.PERSISTENCE || '',
     USER_EMAIL: process.env.USER_EMAIL,
-    PASSWORD_EMAIL: process.env.PASSWORD_EMAIL
+    PASSWORD_EMAIL: process.env.PASSWORD_EMAIL,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER
 };
 
 export default config;
