@@ -14,6 +14,7 @@ class SessionsRepository {
         const currentUser = new userDTO (userData);
         return currentUser;
     }
+
 }
 
 export default SessionsRepository;

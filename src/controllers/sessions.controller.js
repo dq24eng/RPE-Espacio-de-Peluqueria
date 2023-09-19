@@ -17,13 +17,9 @@ class sessionController {
     }
 
     async register (req, res) {
-        const { first_name, last_name, email, age, role} = req.body;
-        try {
-            req.session.user = {"email": email, "role": role};
-            return res.status(200).json({payload: "Registered"})
-        } catch (error) {
-            res.status(400).json({error: error.message, status: "failed"})
-        }
+        const { email, role} = req.body;
+        req.session.user = {"email": email, "role": role};
+        return res.status(200).json({payload: "Registered"})
     }
 
     async logout (req, res) {

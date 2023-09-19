@@ -8,7 +8,7 @@ class sessionsRouter {
         this.startSession.post("/login", passport.authenticate('login'), sessionsController.login); 
         this.startSession.post(
             "/register", 
-            passport.authenticate('register', {failureRedirect:'/failRegister'}), 
+            passport.authenticate('register', {failureRedirect:'/failRegister'}),
             sessionsController.register
         );
         this.startSession.get('/logout', sessionsController.logout);

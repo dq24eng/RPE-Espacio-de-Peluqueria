@@ -1,0 +1,9 @@
+{"level":"http","message":"GET en / -18:15:33"}
+{"level":"http","message":"GET en / -18:15:49"}
+{"level":"warn","message":"Warning"}
+info:  function toLocaleDateString() { [native code] } - Connected to Mongo Atlas
+fatal: Fatal log
+fatal: Fatal log
+error: Error log
+fatal: Fatal log
+error: Error log

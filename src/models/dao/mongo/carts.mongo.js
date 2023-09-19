@@ -5,6 +5,7 @@ import userDTO from "../../dto/user.dto.js";
 import userModel from "./model/users.model.js";
 import sendEmail from "../../../utils/email.utils.js";
 import sendMessage from "../../../utils/messages.utils.js";
+import logger from "../../../utils/logger.utils.js";
 
 export class CartsMongoDAO{
     constructor() {}
@@ -41,7 +42,8 @@ export class CartsMongoDAO{
                         if (prods[j]._id.toString() == products[i]._id){
                             if (prods[j].quantity > products[i].stock){
                                 // No hay suficiente stock para agregar el producto a la compra 
-                                console.log(`We do not have enough stock of the product ${prods[j]._id.toString()}. The product was not added to the purchase.`);
+                                // console.log(`We do not have enough stock of the product ${prods[j]._id.toString()}. The product was not added to the purchase.`);
+                                logger.warn(`${new Date().toUTCString()} - We do not have enough stock of the product ${prods[j]._id.toString()}. The product was not added to the purchase.`)
                                 notAddedProd.push(products[i]);
                             }
                             if (prods[j].quantity <= products[i].stock){
@@ -70,7 +72,8 @@ export class CartsMongoDAO{
             if (purchaseProd.length == 0) 
                 return `The cart is empty. The following products cannot be purchased: ${notAddedProd}`
             if (notAddedProd.length > 0) 
-                console.log(`The following products cannot be purchased: ${notAddedProd}`) 
+                //console.log(`The following products cannot be purchased: ${notAddedProd}`) 
+                logger.warn(`${new Date().toUTCString()} - The following products cannot be purchased: ${notAddedProd}`)
             const date = new Date().toISOString(); 
             const fullUser = await userModel.findOne({email: user.email});
             const userdto = new userDTO(fullUser); 

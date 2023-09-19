@@ -58,6 +58,7 @@ class viewsController {
 
     async home(req, res) {
         try {
+            req.logger.warn("Warning")
             res.render('home', {user: req.session.user})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})

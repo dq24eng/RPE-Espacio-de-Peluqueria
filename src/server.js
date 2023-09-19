@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import handlebars from 'express-handlebars';
 import cookieParser from "cookie-parser";
-import nodemailer from "nodemailer"; 
 // System configurations
 import __dirname from './utils.js';
 // Environment variables
@@ -18,21 +17,23 @@ import productsRouter from "./routers/products.router.js";
 import viewsRouter from "./routers/views.router.js";
 import sessionsRouter from "./routers/sessions.router.js";
 import cartsRouter from "./routers/carts.router.js";
+//Logger
+import logger from "./utils/logger.utils.js";
+import testRouter from "./routers/tests.router.js";
 
 // Server 
 const app = express(); 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.listen(config.PORT, ()=>{console.log("Server listening")} )
 
 // MongoDB
 
 export const connectMongoDB = async () => {
     try {
         await mongoose.connect(config.MONGO_URL);
-        console.log("Connected to Mongo Atlas");
+        logger.info(`${new Date().toUTCString()} - Connected to Mongo Atlas`)
     } catch (error) {
-        console.log("Failed connection with Mongo Atlas", error);
+        logger.info(`${new Date().toUTCString()} - Failed connection with Mongo Atlas ${error}`)
     }
 };
 connectMongoDB();
@@ -57,14 +58,12 @@ app.use(passport.session());
 app.use(cookieParser());
 
 // Routes 
+app.use(express.json())
 app.use('/', viewsRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter.getRouter());
 app.use('/carts', cartsRouter.getRouter()); 
+app.use('/loggerTest', testRouter);
 
-//Nodemailer 
-app.get('/mail')
-
-
-
-
+// Server listening
+app.listen(config.PORT, ()=>{ logger.info(`${new Date().toUTCString()} - Server listening on port ${config.PORT}`) })

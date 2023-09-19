@@ -14,18 +14,19 @@ const initializedPassport = () => {
 
     passport.use('register', 
         new LocalStrategy({passReqToCallback:true, usernameField: 'email'}, async (req, username, password, done) => {
-            const { first_name, last_name, email, age, role} = req.body;
+            const { first_name, last_name, email, age, role, phone} = req.body;
             try {
-                let user = await userModel.findOne({email: username}); // CUIDADO, username o email? email:email = login ?
+                let user = await userModel.findOne({email: username}); 
                 if (user) {
                     console.log("User already exists");
                     return done(null, false)
                 }
-                const newUser = {first_name, last_name, email, age, password: createHash(password), role}; 
+                const newUser = {first_name, last_name, email, age, password: createHash(password), role, phone}; 
                 let result = await userModel.create(newUser);
                 return done(null, result); 
             } catch (error) {
-                return done ("Error de usuario" + error);
+                console.log("No se pudo crear el usuario")
+                return done ("User error" + error);
             }
         }
     ))
