@@ -7,3 +7,23 @@ fatal: Fatal log
 error: Error log
 fatal: Fatal log
 error: Error log
+error: Fri, 22 Sep 2023 20:20:07 GMT - Error: User not found
+error: Fri, 22 Sep 2023 20:20:07 GMT - Error: alert is not defined
+error: Fri, 22 Sep 2023 20:21:39 GMT - Error: User not found
+error: Fri, 22 Sep 2023 20:21:39 GMT - Error: alert is not defined
+error: Fri, 22 Sep 2023 20:23:00 GMT - Error: User not found
+error: Fri, 22 Sep 2023 20:23:00 GMT - Error: window is not defined
+error: Fri, 22 Sep 2023 20:25:32 GMT - Error: User not found
+error: Fri, 22 Sep 2023 20:25:32 GMT - Error: res is not defined
+error: Fri, 22 Sep 2023 20:28:20 GMT - Error: User not found
+error: Fri, 22 Sep 2023 20:33:12 GMT - Error: logger.indexOf is not a function
+error: Fri, 22 Sep 2023 23:06:53 GMT - Error: cookieParser("secret") required for signed cookies
+error: Fri, 22 Sep 2023 23:07:23 GMT - Error: cookieParser("secret") required for signed cookies
+error: Fri, 22 Sep 2023 23:26:25 GMT - Error: document is not defined
+error: Fri, 22 Sep 2023 23:30:01 GMT - Error: Cannot read properties of undefined (reading 'rawHeaders')
+error: Fri, 22 Sep 2023 23:30:17 GMT - Error: Cannot read properties of undefined (reading 'rawHeaders')
+error: Fri, 22 Sep 2023 23:37:46 GMT - Error: document is not defined
+error: Fri, 22 Sep 2023 23:40:15 GMT - Error: document is not defined
+error: Fri, 22 Sep 2023 23:40:27 GMT - Error: Cannot read properties of undefined (reading 'restartPassCookie')
+error: Fri, 22 Sep 2023 23:51:53 GMT - Error: req.cookies is not a function
+error: Fri, 22 Sep 2023 23:52:06 GMT - Error: req.cookies is not a function

@@ -21,7 +21,7 @@ const initializedPassport = () => {
                     console.log("User already exists");
                     return done(null, false)
                 }
-                const newUser = {first_name, last_name, email, age, password: createHash(password), role, phone}; 
+                const newUser = {first_name, last_name, email, age, password: createHash(password), role, phone, restart: false}; 
                 let result = await userModel.create(newUser);
                 return done(null, result); 
             } catch (error) {
@@ -53,7 +53,6 @@ const initializedPassport = () => {
             clientSecret: config.GITHUB_CLIENT_SECRET,
             callbackURL: config.GITHUB_CALLBACK_URL,
         }, async (accessToken, refreshToken, profile, done)  => {
-            //console.log(profile);
             try{
                 let user = await userModel.findOne({email:profile._json.email})
                 if (!user) {

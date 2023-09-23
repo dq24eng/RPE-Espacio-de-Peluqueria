@@ -12,7 +12,11 @@ const userSchema = mongoose.Schema({
         default: "user",
         require: true,
     },
-    phone: String
+    phone: String,
+    restart: {
+        type: Boolean,
+        default: false,
+    }
 })
 
 const userModel = mongoose.model(userCollection, userSchema);

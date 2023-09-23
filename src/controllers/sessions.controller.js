@@ -1,5 +1,7 @@
 import {sessionsRepository} from "../models/repositories/repository.js"
 import config from "../config/enviroment.config.js";
+import logger from "../utils/logger.utils.js";
+import { faker } from '@faker-js/faker/locale/es';
 
 class sessionController {
 
@@ -12,14 +14,20 @@ class sessionController {
                 res.cookie(config.COOKIE_EXTRACTOR_SCTKEY, access_token, { maxAge: 60*60*1000, httpOnly: true })
                     .json({payload: "Ok"})
         } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
             res.status(400).json({error: error.message, status: "failed"})
         }
     }
 
     async register (req, res) {
-        const { email, role} = req.body;
-        req.session.user = {"email": email, "role": role};
-        return res.status(200).json({payload: "Registered"})
+        try {
+            const { email, role} = req.body;
+            req.session.user = {"email": email, "role": role};
+            return res.status(200).json({payload: "Registered"})
+        } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
+            res.status(400).json({error: error.message, status: "failed"});
+        }
     }
 
     async logout (req, res) {
@@ -32,6 +40,7 @@ class sessionController {
                 }
             });
         } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
             res.status(400).json({error: error.message, status: "failed"})
         }
     }
@@ -41,6 +50,7 @@ class sessionController {
             req.session.user = req.user;
             res.redirect('/')
         } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
             res.status(400).json({error: error.message, status: "failed"})
         }
     }
@@ -51,6 +61,44 @@ class sessionController {
             const currentUser = await sessionsRepository.current(user); 
             return res.status(200).json({message: "Current user", payload: currentUser})
         } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async restart (req, res) {
+        try {
+            const {email} = req.body;
+            if (!email) {
+                logger.error(`${new Date().toUTCString()} - Error: Incomplete Values`);
+                return res.status(400).send({status:"error", error:"Incomplete Values"});
+            }
+            const cookieId = faker.database.mongodbObjectId();
+            res.cookie('restartPassCookie', cookieId, {
+				signed: true,
+				maxAge: 60*60*1000, // Expira en 1 hora
+			});
+            const restartPassUser = await sessionsRepository.restart(email, req);
+            return restartPassUser == undefined ?  
+                res.status(404).send({status:"error", error:"User not found"}) : 
+                res.status(200).json({message: "Restart password process started", payload: restartPassUser})
+        } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async restartPass(req, res) {
+        try {
+            const {email, password} = req.body;
+            const restartPassUser = await sessionsRepository.restartPassword(email, password);
+            if (restartPassUser == undefined) {
+                res.status(400).json({error: error.message, status: "failed"})
+            } else {
+                res.status(200).json({message: "Restart password process completed", payload: restartPassUser})
+            }
+        } catch (error) {
+            logger.error(`${new Date().toUTCString()} - Error: ${error.message}`);
             res.status(400).json({error: error.message, status: "failed"})
         }
     }

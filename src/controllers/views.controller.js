@@ -1,8 +1,11 @@
 import viewsService from "../services/views.service.js";
+import userModel from "../models/dao/mongo/model/users.model.js";
 
 class viewsController {
     async getProductsView(req, res) {
         try {
+            let cookies = req.signedCookies["restartPassCookie"];
+            console.log(cookies)
             if (!req.session.user) return res.redirect('/login');
             let {page=1, limit=10, query , sort} = req.query;
             const {products, pages} = await viewsService.getProducts(page, limit, query, sort)
@@ -38,7 +41,7 @@ class viewsController {
 
     async getLoginView(req, res) {
         //if (req.session.user) return res.redirect('/');
-        console.log(req.session.user)
+        //console.log(req.session.user)
         try {
             res.render('login')
         } catch (error) {
@@ -58,8 +61,32 @@ class viewsController {
 
     async home(req, res) {
         try {
-            req.logger.warn("Warning")
             res.render('home', {user: req.session.user})
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async getRestartView(req, res) {
+        try {
+            res.render('restart')
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async restartPass(req, res) {
+        try {
+            const user = await userModel.findOne({_id: req.params.idUser})
+            if (req.signedCookies["restartPassCookie"] && user.restart) { 
+                // Entra si verificamos que la cookie existe y el usuario efectivamente solicitó cambio de clave
+                //user.restart = false;
+                //await userModel.updateOne({ _id: user._id }, user);
+                res.render('restartPassword')
+            } else {
+                console.log(`El tiempo expiró, por favor solicite un nuevo link de acceso.`);
+            }
+            //
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

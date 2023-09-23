@@ -15,6 +15,16 @@ class SessionsRepository {
         return currentUser;
     }
 
+    async restart(email, req){
+        const restartPassUser = await this.dao.restartDAO(email, req);
+        return restartPassUser;
+    }
+
+    async restartPassword (email, password) {
+        const resPass = await this.dao.restartPasswordDAO(email, password); 
+        return resPass;
+    }
+
 }
 
 export default SessionsRepository;

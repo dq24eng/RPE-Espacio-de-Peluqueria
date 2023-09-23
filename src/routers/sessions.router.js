@@ -18,6 +18,8 @@ class sessionsRouter {
             passport.authenticate('github', {failureRedirect:'/login'}), 
             sessionsController.githubcallback);
         this.startSession.get('/current', sessionsController.current);
+        this.startSession.post('/restart', sessionsController.restart);
+        this.startSession.post('/restartPass', sessionsController.restartPass);
     }
     getRouter() {
         return this.startSession;

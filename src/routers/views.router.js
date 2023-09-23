@@ -10,7 +10,8 @@ class viewsRouter {
         this.startView.get("/products/:pid", viewsController.getProductView); 
         this.startView.get("/login", viewsController.getLoginView);
         this.startView.get("/register", viewsController.getRegisterView); 
-        
+        this.startView.get("/restart", viewsController.getRestartView);
+        this.startView.get('/restart/:idUser/:idCookie', viewsController.restartPass);
     }
     getRouter() {
         return this.startView;

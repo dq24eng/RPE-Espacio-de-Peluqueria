@@ -55,7 +55,7 @@ app.set('view engine', 'handlebars');
 initializedPassport();
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser());
+app.use(cookieParser("secretKey"));
 
 // Routes 
 app.use(express.json())

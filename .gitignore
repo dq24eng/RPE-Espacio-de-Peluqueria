@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+src/test/node_modules/
 
 # Enviroment variables
 .env
