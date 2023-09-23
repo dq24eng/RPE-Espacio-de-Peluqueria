@@ -1,5 +1,6 @@
 import viewsService from "../services/views.service.js";
 import userModel from "../models/dao/mongo/model/users.model.js";
+import logger from "../utils/logger.utils.js";
 
 class viewsController {
     async getProductsView(req, res) {
@@ -80,13 +81,12 @@ class viewsController {
             const user = await userModel.findOne({_id: req.params.idUser})
             if (req.signedCookies["restartPassCookie"] && user.restart) { 
                 // Entra si verificamos que la cookie existe y el usuario efectivamente solicitó cambio de clave
-                //user.restart = false;
-                //await userModel.updateOne({ _id: user._id }, user);
                 res.render('restartPassword')
             } else {
                 console.log(`El tiempo expiró, por favor solicite un nuevo link de acceso.`);
+                logger.error(`${new Date().toUTCString()} - The link expired, please try again.`)
+                res.render('linkExpired')
             }
-            //
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

@@ -76,7 +76,7 @@ class sessionController {
             const cookieId = faker.database.mongodbObjectId();
             res.cookie('restartPassCookie', cookieId, {
 				signed: true,
-				maxAge: 60*60*1000, // Expira en 1 hora
+				maxAge: 60*1*1000, // Expira en 1 hora
 			});
             const restartPassUser = await sessionsRepository.restart(email, req);
             return restartPassUser == undefined ?  
