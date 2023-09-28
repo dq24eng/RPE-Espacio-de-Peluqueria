@@ -26,6 +26,11 @@ const productsSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
+    },
+    owner: {    // Persona que creó el producto
+        type: String,
+        default: "admin",
+        required: true,
     }
 })
 

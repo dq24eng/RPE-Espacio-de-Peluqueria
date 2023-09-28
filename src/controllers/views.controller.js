@@ -52,7 +52,7 @@ class viewsController {
 
     async getRegisterView(req, res) {
         if (req.session.user) return res.redirect('/');
-        console.log(req.session.user)
+        //console.log(req.session.user)
         try {
             res.render('register')
         } catch (error) {

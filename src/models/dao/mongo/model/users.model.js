@@ -9,13 +9,13 @@ const userSchema = mongoose.Schema({
     password: String,
     role: {
         type: String,
-        default: "user",
+        default: "user",    // User, Admin & Premium
         require: true,
     },
     phone: String,
     restart: {
-        type: Boolean,
-        default: false,
+        type: Boolean,      
+        default: false,     // Restore password -> false by default 
     }
 })
 
