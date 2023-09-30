@@ -44,8 +44,12 @@ class productController {
             if (!user) return res.redirect('/'); 
             const data = req.body; 
             const id = req.params.pid;
-            const response = await productsRepository.updateProduct(id, data);
-            res.status(201).json({product: response, status: "success"})
+            const response = await productsRepository.updateProduct(id, data, user);
+            if (response) {
+                res.status(201).json({product: response, status: "success"})
+            } else {
+                res.status(401).json({error: "Access denied", status: "failed"})
+            }
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }
@@ -53,9 +57,15 @@ class productController {
 
     async deleteProduct(req, res) {
         try {
+            const user = req.session.user; // Usuario loggeado
+            if (!user) return res.redirect('/');
             const id = req.params.pid;
-            const response = await productsRepository.deleteProduct(id);
-            res.status(201).json({product: response, status: "success"})
+            const response = await productsRepository.deleteProduct(id, user);
+            if (response != false) {
+                res.status(201).json({product: response, status: "success"})
+            } else {
+                res.status(401).json({error: "Access denied", status: "failed"})
+            }
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

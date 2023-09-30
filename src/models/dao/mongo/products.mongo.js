@@ -31,21 +31,31 @@ export class ProductsMongoDAO{
         }
     }
 
-    async updateProductDAO (id, data) {
-        try {
-            await productModel.updateOne({ _id: id }, data);
-            const response = await productModel.findById(id);
-            return response;
+    async updateProductDAO (id, data, user) {
+        try { 
+            const product = await productModel.find({_id: id});
+            if (((user.role == "premium")&&(product[0].owner == user.email))||(user.role == "admin")){
+                await productModel.updateOne({ _id: id }, data);
+                const response = await productModel.findById(id);
+                return response;
+            } else {
+                return false;
+            }
         } catch (error) {
             throw new Error (error.message);
         }
     }
 
-    async deleteProductDAO (id) {
+    async deleteProductDAO (id, user) {
         try {
-            await productModel.deleteOne({ _id: id });
-            const response = await productModel.findById(id);
-            return response;
+            const product = await productModel.find({_id: id});
+            if (((user.role == "premium")&&(product[0].owner == user.email))||(user.role == "admin")){
+                await productModel.deleteOne({ _id: id });
+                const response = await productModel.findById(id);
+                return response;
+            } else {
+                return false;
+            }
         } catch (error) {
             throw new Error (error.message);
         }

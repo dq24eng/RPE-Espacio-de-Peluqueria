@@ -17,6 +17,7 @@ import productsRouter from "./routers/products.router.js";
 import viewsRouter from "./routers/views.router.js";
 import sessionsRouter from "./routers/sessions.router.js";
 import cartsRouter from "./routers/carts.router.js";
+import usersRouter from "./routers/users.routers.js";
 //Logger
 import logger from "./utils/logger.utils.js";
 import testRouter from "./routers/tests.router.js";
@@ -62,6 +63,7 @@ app.use(express.json())
 app.use('/', viewsRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter.getRouter());
+app.use('/api/users/', usersRouter.getRouter());
 app.use('/carts', cartsRouter.getRouter()); 
 app.use('/loggerTest', testRouter);
 

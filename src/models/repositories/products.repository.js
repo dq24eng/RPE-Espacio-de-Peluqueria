@@ -15,12 +15,12 @@ class ProductsRepository {
         return await this.dao.createProductDAO(data);
     }
 
-    async updateProduct(id, data) {
-        return await this.dao.updateProductDAO(id, data);
+    async updateProduct(id, data, user) {
+        return await this.dao.updateProductDAO(id, data, user);
     }
 
-    async deleteProduct(id) {
-        return await this.dao.deleteProductDAO(id);
+    async deleteProduct(id, user) {
+        return await this.dao.deleteProductDAO(id, user);
     }
 }
 

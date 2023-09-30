@@ -10,3 +10,7 @@ import cartsDAO from "../dao/carts.factory.js";
 import CartsRepository from "./carts.repository.js";
 export const cartsRepository = new CartsRepository(cartsDAO); 
 
+import usersDAO from "../dao/users.factory.js"; 
+import usersRepository from "./users.repository.js";
+export const UsersRepository = new usersRepository(usersDAO);
+
