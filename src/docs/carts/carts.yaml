@@ -1,0 +1,87 @@
+paths:
+  /carts: 
+    get:
+      summary: Obtiene los carritos 
+      tags:
+        - Carts
+      responses: 
+        "201":
+          description: Los carritos fueron consultados correctamente 
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+  /carts/{CartID}: 
+    get:
+      summary: Obtiene un carrito específico
+      tags:
+        - Carts
+      parameters: 
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            $type: String 
+      responses: 
+        "201":
+          description: El carrito fue consultado correctamente 
+        "404":
+          description: No se encontró el carrito consultado
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+  /carts/{CartID}/purchase: 
+    get:
+      summary: Realiza la compra según el carrito indicado en CartID
+      tags:
+        - Carts
+      parameters: 
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            $type: String 
+      responses: 
+        "201":
+          description: La compra fue realizada correctamente 
+        "404":
+          description: No se encontró el carrito consultado
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+
+components:
+  schemas:
+    Cart:
+      type: Object
+      properties: 
+        _id: 
+          type: ObjectId
+          description: ID autogenerado por MongoDB
+        products: 
+          type: Array 
+          description: Arreglo de productos que contiene el carrito con la cantidad de cada uno 
+          properties:
+            _id: 
+              type: ObjectId
+              description: ID producto autogenerado por MongoDB
+            quantity: 
+              type: Number 
+              description: Cantidad del producto 
+      example:
+        _id: ObjectId('12345678abcd')
+        products: [
+          {
+            _id: ObjectId('87654321abcd'),
+            quantity: 4
+          },
+          {
+            _id: ObjectId('abcd12345678'),
+            quantity: 6
+          }
+        ]
+

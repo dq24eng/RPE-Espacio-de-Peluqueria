@@ -1,0 +1,121 @@
+paths:
+  /api/products: 
+    get:
+      summary: Obtiene la lista de productos 
+      tags:
+        - Products
+      responses: 
+        "201":
+          description: Los productos fueron consultados correctamente 
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+    post:
+      summary: Crea un producto
+      tags:
+        - Products
+      responses: 
+        "201":
+          description: El producto fue creado correctamente 
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "401": 
+          description: Acceso denegado
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+  /api/products/{ProductID}: 
+    get:
+      summary: Obtiene un producto en específico
+      tags:
+        - Products
+      parameters: 
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto 
+          schema:
+            $type: String 
+      responses: 
+        "201":
+          description: El producto fue consultado correctamente 
+        "404":
+          description: No se encontró el producto consultado
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+    put:
+      summary: Actualiza un producto en específico
+      tags:
+        - Products
+      responses: 
+        "201":
+          description: El producto fue actualizado correctamente 
+        "400":
+          description: Información inválida
+        "404":
+          description: No se encontró el producto a actualizar
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+    delete:
+      summary: Elimina un producto 
+      tags:
+        - Products
+      responses: 
+        "201":
+          description: El producto fue eliminado correctamente 
+        "404":
+          description: No se encontró el producto a eliminar
+        "500": 
+          description: No se pudo entregar la información (Internet Server Error)
+
+components:
+  schemas:
+    Product:
+      type: Object
+      properties: 
+        _id: 
+          type: ObjectId
+          description: ID autogenerado por MongoDB
+        title:
+          type: String
+          description: Nombre del producto
+        productDescription:
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: Array
+          description: Link a la imagen del producto 
+        code:
+          type: String
+          description: Código del producto
+        stock:
+          type: Number
+          description: Stock actual del producto 
+        status:
+          type: Boolean
+          description: Estado del producto (activo/inactivo)
+        category:
+          type: Number
+          description: Categoría del producto 
+      example:
+        _id: ObjectId('12345678abcd')
+        title: Product example
+        productDescription: This is an example 
+        price: 999
+        thumbnail: [./example/img.jpg]
+        code: EXAMP
+        stock: 99
+        status: true
+        cateogry: ProductExample
+

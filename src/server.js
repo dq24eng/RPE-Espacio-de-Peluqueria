@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import handlebars from 'express-handlebars';
 import cookieParser from "cookie-parser";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express"; 
 // System configurations
 import __dirname from './utils.js';
 // Environment variables
@@ -39,6 +41,28 @@ export const connectMongoDB = async () => {
 };
 connectMongoDB();
 
+// Swagger 
+
+const swaggerOptions={
+    definition:{
+        openapi: '3.0.0',
+        info:{
+            title:' API Documentation ',
+            description: ' Romina Ponces Estilista - Espacio de Peluquería ',
+            version: '1.0.0',
+            contact:{
+                name: "Dario Quinteros",
+                url:'https://www.linkedin.com/in/dario-german-quinteros-9b6835201/'
+            }
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`],
+}
+
+const spec = swaggerJSDoc(swaggerOptions)
+
+// MongoDB Configuration
+
 app.use(express.static(`${__dirname}/public`));
 app.use(session({
     store: MongoStore.create({ mongoUrl: config.MONGO_URL }),
@@ -66,6 +90,7 @@ app.use('/api/sessions', sessionsRouter.getRouter());
 app.use('/api/users/', usersRouter.getRouter());
 app.use('/carts', cartsRouter.getRouter()); 
 app.use('/loggerTest', testRouter);
+app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(spec))
 
 // Server listening
 app.listen(config.PORT, ()=>{ logger.info(`${new Date().toUTCString()} - Server listening on port ${config.PORT}`) })
