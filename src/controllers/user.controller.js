@@ -10,6 +10,41 @@ class userController {
             res.status(400).json({error: error.message, status: "failed"})
         }
     }
+    async getUsers (req, res) {
+        try {
+            const response = await UsersRepository.getUsers(); 
+            res.status(201).json({users: response, status: "success"})
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+    async createUser (req, res) {
+        try {
+            const data = req.body;
+            const response = await UsersRepository.createUser(data); 
+            res.status(201).json({users: response, status: "success"})
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async deleteExpiredUsers(req, res) {
+        try {
+            const user = req.session.user; // Usuario loggeado
+            if (!user) return res.redirect('/'); 
+            if (user.role == "admin") { 
+                const users = await UsersRepository.getFullUsers(); 
+                await UsersRepository.delExpUsers(users);
+                res.status(201).json({status: "deleted"})
+            } else {    // User or Premium role
+                res.status(401).json({error: "You cannot delete users", status: "failed"})
+            }
+            
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
 }
 
 export default new userController();

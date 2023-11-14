@@ -1,6 +1,7 @@
 import viewsService from "../services/views.service.js";
 import userModel from "../models/dao/mongo/model/users.model.js";
 import logger from "../utils/logger.utils.js";
+import { UsersRepository } from "../models/repositories/repository.js";
 
 class viewsController {
     async getProductsView(req, res) {
@@ -87,6 +88,18 @@ class viewsController {
                 logger.error(`${new Date().toUTCString()} - The link expired, please try again.`)
                 res.render('linkExpired')
             }
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async getUpdateRole (req, res) {
+        try {
+            if (!req.session.user) return res.redirect('/login');
+            if (req.session.user.role != "admin") res.render('forbiddenAccess')
+            const users = await UsersRepository.getUsers(); 
+            console.log(users)
+            res.render('updateRole', {data: users});
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

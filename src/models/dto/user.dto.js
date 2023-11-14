@@ -3,7 +3,7 @@ class userDTO {
         this.name = `${user.first_name} ${user.last_name}`.trim(); 
         this.email = user.email;
         this.role = user.role;
-        this.phone = user.phone;
+        //this.phone = user.phone;
     }
 }
 

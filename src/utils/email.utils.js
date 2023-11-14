@@ -38,3 +38,14 @@ export const sendRestoreEmail = async (user, resPassCookie) => {
     }
     await transporter.sendMail(mail);
 }
+
+export const deletedUserEmail = async (user) => {
+    const mail = {
+        from: config.USER_EMAIL, 
+        to: user.email,
+        subject: `Your account has been deleted`, 
+        html: `Dear ${user.first_name}, we regret to inform you that your account has been deleted for not being used for more than 2 days. 
+        \n Best regards, Romina Ponces Estilista.`
+    }
+    await transporter.sendMail(mail);
+}

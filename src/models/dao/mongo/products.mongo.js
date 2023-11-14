@@ -25,7 +25,7 @@ export class ProductsMongoDAO{
     async createProductDAO (data) {
         try {
             const response = await productModel.create(data); 
-            return response
+            return response;
         } catch (error) {
             throw new Error (error.message);
         }

@@ -1,4 +1,5 @@
-import productModel from "../models/dao/mongo/model/products.model.js"
+import productModel from "../models/dao/mongo/model/products.model.js";
+import { UsersMongoDAO } from "../models/dao/mongo/users.mongo.js";
 
 class viewsService {
 
@@ -34,6 +35,7 @@ class viewsService {
             throw new Error (error.message);
         }
     }
+
 }
 
 export default new viewsService(); 

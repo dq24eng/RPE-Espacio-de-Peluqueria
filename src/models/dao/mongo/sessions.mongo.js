@@ -10,6 +10,8 @@ export class SessionsMongoDAO {
         try {
             const user =await userModel.findOne({email});
             if(!user) return null
+            user.lastSession = new Date(); // Actualizamos fecha de ultima sesión del usuario 
+            await userModel.updateOne({ _id: user._id }, user);
             const access_token = generateToken({email});
             return {user, access_token}
         } catch (error) {

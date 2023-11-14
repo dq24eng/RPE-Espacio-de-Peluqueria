@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userCollection = 'Users'
+const userCollection = 'Users' 
 const userSchema = mongoose.Schema({
     first_name: String,
     last_name: String,
@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
     restart: {
         type: Boolean,      
         default: false,     // Restore password -> false by default 
-    }
+    },
+    lastSession: Date, 
 })
 
 const userModel = mongoose.model(userCollection, userSchema);
