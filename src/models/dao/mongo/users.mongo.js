@@ -6,11 +6,12 @@ import { deletedUserEmail } from "../../../utils/email.utils.js";
 export class UsersMongoDAO {
     constructor() {}
 
-    async updateRoleDAO (user) {
+    async updateRoleDAO (user, newRole) {
         try {
             const updtUser = await userModel.find({_id: user}); 
-            updtUser[0].role == "user" ? await userModel.updateOne({_id: user}, {$set: {role: "premium"}}) : "";
-            updtUser[0].role == "premium" ? await userModel.updateOne({_id: user}, {$set: {role: "user"}}) : "";
+            newRole == "admin" ? updtUser[0].role = "admin" : 
+                (newRole == "premium" ? updtUser[0].role = "premium" : updtUser[0].role = "user");
+            await userModel.updateOne({ _id: user }, updtUser[0]);
             return await userModel.find({_id: user}); 
         } catch (error) {
             throw new Error (error.message);
@@ -63,11 +64,18 @@ export class UsersMongoDAO {
                 // const hours = Math.floor(((tsls / 1000) / 60) / 24); // Si es mayor igual a 48 horas, entonces eliminar
                 if (mins >= 2880) { this.deleteFunction(usr) }
             })
-
         } catch (error) {
             throw new Error (error.message);
         }
     }
 
+    async deleteUserDAO(id) {
+        try {
+            const user = await userModel.find({_id: id}); 
+            this.deleteFunction(user[0]);
+        } catch (error) {
+            throw new Error (error.message);
+        }
+    }
 
 }

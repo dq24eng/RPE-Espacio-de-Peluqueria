@@ -98,8 +98,16 @@ class viewsController {
             if (!req.session.user) return res.redirect('/login');
             if (req.session.user.role != "admin") res.render('forbiddenAccess')
             const users = await UsersRepository.getUsers(); 
-            console.log(users)
+            //console.log(users)
             res.render('updateRole', {data: users});
+        } catch (error) {
+            res.status(400).json({error: error.message, status: "failed"})
+        }
+    }
+
+    async getUpdateRoleById (req, res) {
+        try {
+            res.render('updateRoleById', {idUser: req.params.idUser})
         } catch (error) {
             res.status(400).json({error: error.message, status: "failed"})
         }

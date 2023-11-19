@@ -13,6 +13,7 @@ class viewsRouter {
         this.startView.get("/restart", viewsController.getRestartView);
         this.startView.get('/restart/:idUser/:idCookie', viewsController.restartPass);
         this.startView.get("/updateRole", viewsController.getUpdateRole);
+        this.startView.get("/updateRole/:idUser/", viewsController.getUpdateRoleById);
     }
     getRouter() {
         return this.startView;

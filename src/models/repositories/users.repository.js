@@ -3,8 +3,8 @@ class usersRepository {
         this.dao = dao;
     }
 
-    async updateRole(user) {
-        return await this.dao.updateRoleDAO(user);
+    async updateRole(userId, newRole) {
+        return await this.dao.updateRoleDAO(userId, newRole);
     }
 
     async getUsers () {
@@ -21,6 +21,10 @@ class usersRepository {
 
     async delExpUsers(users){
         return await this.dao.delExpUsersDAO(users); 
+    }
+
+    async deleteUser(id) {
+        return await this.dao.deleteUserDAO(id);
     }
 }
 
